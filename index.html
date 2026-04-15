@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>快穿·万人迷｜异世界旅人手札 v4.3</title>
+    <style>
+        :root {
+            --bg-body: #ffffff;
+            --bg-panel: #ffffff;
+            --bg-side: #fafafa;
+            --text-primary: #111111;
+            --text-secondary: #555555;
+            --border-light: #e0e0e0;
+            --border-medium: #cccccc;
+            --accent: #111111;
+            --accent-bg: #eeeeee;
+            --card-shadow: none;
+            --header-border: #333333;
+            --star-color: #d4af37;
+            --choice-result-color: #a0a0a0;
+        }
+        
+        body.theme-blackwhite {
+            --bg-body: #ffffff;
+            --bg-panel: #ffffff;
+            --bg-side: #fafafa;
+            --text-primary: #111111;
+            --text-secondary: #555555;
+            --border-light: #e0e0e0;
+            --border-medium: #cccccc;
+            --accent: #111111;
+            --accent-bg: #eeeeee;
+            --card-shadow: none;
+            --header-border: #333333;
+        }
+        
+        body.theme-morandi_blue {
+            --bg-body: #eef2f7;
+            --bg-panel: #ffffff;
+            --bg-side: #f5f8fc;
+            --text-primary: #2c3e50;
+            --text-secondary: #6f8aa3;
+            --border-light: #d2dfed;
+            --border-medium: #bccde0;
+            --accent: #5f8ab6;
+            --accent-bg: #dee8f2;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            --header-border: #5f8ab6;
+        }
+        
+        body.theme-burgundy {
+            --bg-body: #faf5f5;
+            --bg-panel: #fffcfc;
+            --bg-side: #fdf8f8;
+            --text-primary: #4a2a2a;
+            --text-secondary: #8b5a5a;
+            --border-light: #e8d0d0;
+            --border-medium: #d4b0b0;
+            --accent: #8b3a3a;
+            --accent-bg: #f0e0e0;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            --header-border: #8b3a3a;
+        }
+        
+        body.theme-morandi_apricot {
+            --bg-body: #f9f2e0;
+            --bg-panel: #fffcf5;
+            --bg-side: #fef7e8;
+            --text-primary: #5e4b3a;
+            --text-secondary: #b2906e;
+            --border-light: #f0e0c8;
+            --border-medium: #e2cdad;
+            --accent: #cb8b42;
+            --accent-bg: #f5e5d2;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            --header-border: #cb8b42;
+        }
+        
+        body.theme-morandi_sage {
+            --bg-body: #eef2ea;
+            --bg-panel: #fefef7;
+            --bg-side: #f8faf2;
+            --text-primary: #3c4935;
+            --text-secondary: #7c8b6b;
+            --border-light: #d9e2ce;
+            --border-medium: #c5d2b4;
+            --accent: #7c9c5e;
+            --accent-bg: #e1ecce;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            --header-border: #7c9c5e;
+        }
+        
+        body.night-mode {
+            --bg-body: #121212;
+            --bg-panel: #1e1e1e;
+            --bg-side: #252525;
+            --text-primary: #f0f0f0;
+            --text-secondary: #c0c0c0;
+            --border-light: #3a3a3a;
+            --border-medium: #555555;
+            --accent: #aaaaaa;
+            --accent-bg: #3a3a3a;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            --header-border: #aaaaaa;
+            --star-color: #f0c674;
+            --choice-result-color: #888888;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg-body); 
+            font-family: 'Segoe UI', 'Georgia', serif; 
+            color: var(--text-primary); 
+            line-height: 1.6; 
+            padding: 1rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        
+        /* 所有圆角改为4px */
+        .game-header {
+            text-align: center;
+            margin-bottom: 1.2rem;
+            padding: 0.5rem 0 0.2rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .game-header h1 {
+            font-size: 1.9rem;
+            letter-spacing: 2px;
+            font-weight: 400;
+            font-family: 'Georgia', 'Segoe UI', serif;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow-x: auto;
+            overflow-y: hidden;
+            text-overflow: clip;
+            display: inline-block;
+            max-width: 100%;
+            padding: 0 0.2rem;
+        }
+        @media (max-width: 550px) {
+            .game-header h1 { font-size: 1.5rem; letter-spacing: 1px; }
+        }
+        .header-divider {
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+            opacity: 0.7;
+        }
+        
+        .game-container { max-width: 1400px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 1.5rem; }
+        .main-panel { flex: 2.5; min-width: 280px; background: var(--bg-panel); border: 1px solid var(--border-light); padding: 1.2rem; border-radius: 4px; box-shadow: var(--card-shadow); }
+        .side-panel { flex: 1.5; min-width: 280px; display: flex; flex-direction: column; gap: 1.2rem; }
+        .status-card, .character-card-section { background: var(--bg-side); border: 1px solid var(--border-light); padding: 1rem; border-radius: 4px; box-shadow: var(--card-shadow); }
+        .status-label { font-size: 0.7rem; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 0.4rem; border-bottom: 1px solid var(--border-medium); display: inline-block; }
+        .character-grid { display: flex; flex-direction: column; gap: 0.8rem; max-height: 500px; overflow-y: auto; }
+        .character-card { background: var(--bg-panel); border: 1px solid var(--border-light); padding: 0.6rem; border-radius: 4px; display: flex; align-items: center; gap: 0.8rem; }
+        .char-avatar { width: 40px; height: 40px; background: var(--accent-bg); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .char-info { flex: 1; }
+        .char-name { font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+        .star { color: var(--star-color); font-size: 0.8rem; }
+        .char-type { font-size: 0.7rem; color: var(--text-secondary); }
+        .char-favor { font-size: 0.75rem; margin-top: 2px; }
+        .char-desc { font-size: 0.7rem; color: var(--text-secondary); }
+        .round-header { border-left: 3px solid var(--header-border); padding-left: 0.8rem; margin-bottom: 1rem; font-size: 0.8rem; color: var(--text-secondary); }
+        .narrative { font-size: 0.9rem; line-height: 1.65; white-space: pre-wrap; }
+        .narrative .message-block { margin-bottom: 1.2rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.6rem; }
+        .narrative .choice-result { 
+            color: var(--choice-result-color); 
+            font-style: italic; 
+            font-size: 0.85rem; 
+            margin: 0.3rem 0;
+        }
+        .narrative-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem; max-width: 300px; margin-top: 0.3rem; }
+        .narrative-actions button, .narrative-actions .timer { text-align: center; padding: 0.2rem; font-size: 0.7rem; background: var(--accent-bg); border: 1px solid var(--border-medium); border-radius: 4px; cursor: pointer; color: var(--text-primary); }
+        .narrative-actions .timer { background: transparent; cursor: default; }
+        .control-bar { margin-top: 1.5rem; display: grid; gap: 0.5rem; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+        @media (max-width: 900px) { .control-bar { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+        @media (max-width: 600px) { .control-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+        .control-bar button { padding: 0.3rem; font-size: 0.7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: var(--bg-panel); border: 1px solid var(--border-medium); color: var(--text-primary); cursor: pointer; border-radius: 4px; }
+        .control-bar button.primary-btn { background: var(--accent); color: white; border-color: var(--accent); }
+        .cmd-input-area { margin-top: 1rem; display: flex; gap: 0.5rem; }
+        .cmd-input { flex: 3; background: var(--bg-panel); border: 1px solid var(--border-medium); padding: 0.4rem; font-family: monospace; color: var(--text-primary); border-radius: 4px; }
+        .options-area { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+        .options-area select { max-width: 100%; word-wrap: break-word; white-space: normal; padding: 0.4rem; border-radius: 4px; background: var(--bg-panel); border: 1px solid var(--border-medium); color: var(--text-primary); }
+        .options-area select option { white-space: normal; word-wrap: break-word; padding: 0.3rem; }
+        .api-config input, .api-config select { width: 100%; padding: 0.3rem; margin: 0.2rem 0; border: 1px solid var(--border-medium); background: var(--bg-panel); color: var(--text-primary); border-radius: 4px; }
+        .model-row { display: flex; gap: 4px; align-items: center; }
+        .model-row select { flex: 2; }
+        .model-row button { flex: 1; font-size: 0.7rem; padding: 0.2rem; }
+        .style-select-full { width: 100%; margin: 0.3rem 0; }
+        .style-select-full select, .style-select-full input { width: 100%; padding: 0.4rem; border: 1px solid var(--border-medium); border-radius: 4px; background: var(--bg-panel); color: var(--text-primary); font-size: 0.75rem; }
+        .custom-hint { font-size: 0.65rem; color: var(--text-secondary); margin-top: 0.2rem; margin-bottom: 0.3rem; }
+        .nsfw-force-select { width: 100%; margin: 0.3rem 0; padding: 0.4rem; border: 1px solid var(--border-medium); border-radius: 4px; background: var(--bg-panel); color: var(--text-primary); font-size: 0.75rem; white-space: normal; word-wrap: break-word; }
+        .api-buttons { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+        .api-buttons button { width: 100%; padding: 0.4rem; font-size: 0.75rem; background: var(--bg-panel); border: 1px solid var(--border-medium); color: var(--text-primary); border-radius: 4px; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: var(--bg-panel); border: 1px solid var(--border-medium); max-width: 550px; width: 90%; padding: 1.2rem; border-radius: 4px; max-height: 80vh; overflow-y: auto; color: var(--text-primary); }
+        .flex-btns { display: flex; gap: 0.8rem; justify-content: flex-end; margin-top: 1rem; }
+        .theme-selector, .mode-selector { display: inline-flex; gap: 0.5rem; align-items: center; }
+        .generating-placeholder { color: var(--text-secondary); font-style: italic; padding: 0.5rem; }
+        .generating-placeholder .cancel-btn { margin-top: 0.5rem; }
+        .form-group { margin-bottom: 0.6rem; }
+        .form-group label { display: block; font-size: 0.75rem; margin-bottom: 0.2rem; color: var(--text-secondary); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.5rem; border: 1px solid var(--border-medium); border-radius: 4px; background: var(--bg-panel); color: var(--text-primary); font-size: 0.8rem; }
+        .hint { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.2rem; }
+        .summary-text { background: var(--bg-side); padding: 0.8rem; white-space: pre-wrap; font-size: 0.8rem; max-height: 300px; overflow-y: auto; color: var(--text-primary); border-radius: 4px; }
+        button { cursor: pointer; }
+        button.primary-btn { background: var(--accent); color: white; border-color: var(--accent); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .save-settings-btn { width: 100%; margin-top: 0.8rem; background: var(--accent); color: white; border-color: var(--accent); border-radius: 4px; padding: 0.4rem; }
+        .check-settings-btn { width: 100%; margin-top: 0.5rem; background: var(--bg-panel); border: 1px solid var(--border-medium); color: var(--text-primary); border-radius: 4px; padding: 0.4rem; }
+    </style>
+</head>
+<body>
+<div class="game-header">
+    <h1>异世界旅人手札</h1>
+    <div class="header-divider">——♢——</div>
+</div>
+
+<div class="game-container">
+    <div class="main-panel">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
+            <div class="theme-selector"><label>◈ 主题</label><select id="colorThemeSelect">
+                <option value="blackwhite">◐ 黑白</option>
+                <option value="morandi_blue">〰 雾霾蓝</option>
+                <option value="burgundy">⌇ 勃艮第红</option>
+                <option value="morandi_apricot">◇ 杏色</option>
+                <option value="morandi_sage">▣ 鼠尾草绿</option>
+            </select></div>
+            <div class="mode-selector"><label>☾ 日夜</label><select id="nightModeSelect"><option value="day">☀ 日间</option><option value="night">☽ 夜间</option></select></div>
+        </div>
+        <div id="roundHeader" class="round-header"><p>☾ 时间：——</p><p>☾ 地点：——</p><p>☾ 在场人物：——</p></div>
+        <div id="narrativeText" class="narrative">◇ 快穿·万人迷 ◇<br><br>请先完成设定表格开始游戏。</div>
+        <div class="control-bar">
+            <button id="nextRoundBtn" class="primary-btn">▷下一回合</button>
+            <button id="initWorldBtn">◈初始化</button>
+            <button id="saveGameBtn">⎚存档</button>
+            <button id="loadGameBtn">☷读档</button>
+            <button id="resetWorldBtn">◉重置</button>
+            <button id="summaryBtn">☰总结</button>
+            <button id="endWorldBtn">↻结束</button>
+        </div>
+        <div id="optionsContainer" class="options-area"></div>
+        <div class="cmd-input-area"><input type="text" id="userCommand" placeholder="输入选项代号或剧情要求"><button id="sendCmdBtn">↲执行</button></div>
+    </div>
+    <div class="side-panel">
+        <div class="status-card"><div class="status-label">◈当前世界</div><div id="worldName">未初始化</div><div class="status-label">◈回合</div><div id="turnInfo">第0回合</div><div class="status-label">◈旅者</div><div id="heroineInfo">未设定</div><hr>
+            <div class="status-label">⌘ NSFW风格</div>
+            <div class="style-select-full"><select id="nsfwStyleSelect"><option value="euphemism">〰 意识流简略</option><option value="explicit">⌇ 详细直白</option></select></div>
+            <div class="style-select-full"><input type="text" id="nsfwCustomReq" placeholder="额外要求（如：侧重情感/温柔向）"></div>
+            <div class="custom-hint">◌ 可补充NSFW偏好</div>
+            <div class="status-label" style="margin-top:0.3rem;">⌁ NSFW强制控制</div>
+            <select id="nsfwForceControl" class="nsfw-force-select">
+                <option value="force_on">⊘ 强制开启NSFW剧情</option>
+                <option value="force_off">⊗ 强制关闭NSFW剧情</option>
+                <option value="auto" selected>✧ 剧情自行发展NSFW剧情（默认）</option>
+            </select>
+            <div class="custom-hint">◌ 强制开启：所有选项引导NSFW；强制关闭：所有选项结束NSFW</div>
+            <div class="status-label" style="margin-top:0.5rem;">✍️写作风格</div>
+            <div class="style-select-full"><select id="writingStyleSelect">
+                <option value="default">默认风格</option>
+                <option value="classical">古风典雅</option>
+                <option value="modern">现代轻快</option>
+                <option value="relaxed">轻松治愈</option>
+                <option value="detailed">细腻描写</option>
+                <option value="custom">自定义</option>
+            </select></div>
+            <div class="style-select-full"><input type="text" id="writingCustomReq" placeholder="写作要求或【】内模仿文本"></div>
+            <div class="custom-hint">◌ 可输入风格要求</div>
+            <div class="status-label" style="margin-top:0.5rem;">☯ 视角选择</div>
+            <div class="style-select-full"><select id="perspectiveSelect">
+                <option value="first">第一人称（我）</option>
+                <option value="second" selected>第二人称（你）</option>
+                <option value="third">第三人称（她/他）</option>
+            </select></div>
+            <div class="custom-hint">◌ 叙述用所选人称，可用姓名替代；角色对话正常使用“你”</div>
+            <button id="saveSettingsBtn" class="save-settings-btn">⎚ 保存设置</button>
+            <button id="checkSettingsBtn" class="check-settings-btn">⌧ 检查设置</button>
+        </div>
+        <div class="character-card-section"><div class="status-label">◇ 角色图鉴 ◇ <span style="font-size:0.7rem;">(★为核心角色)</span></div><div id="characterGrid">暂无角色</div></div>
+        <div class="status-card api-config"><div class="status-label">⌘ API配置</div>
+            <input type="text" id="apiUrl" placeholder="API地址" value="https://api.openai.com/v1/chat/completions">
+            <input type="text" id="apiKey" placeholder="API Key">
+            <div class="model-row"><select id="modelSelect"></select><button id="fetchModelsBtn">拉取模型</button></div>
+            <div class="api-buttons">
+                <button id="saveApiBtn">保存配置</button>
+                <button id="viewPanelBtn">刷新面板</button>
+                <button id="testApiBtn">测试API</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 设定表格模态框 -->
+<div id="setupModal" class="modal"><div class="modal-content"><h3>✧ 角色与世界观 ✧</h3>
+    <div class="form-group"><label>姓名</label><input id="heroName" placeholder="随机"></div>
+    <div class="form-group"><label>昵称</label><input id="heroNickname" placeholder="可选，角色亲近后可称呼"></div>
+    <div class="form-group"><label>性别</label><select id="heroGender"><option>女</option><option>男</option></select></div>
+    <div class="form-group"><label>年龄</label><input id="heroAge" placeholder="随机"></div>
+    <div class="form-group"><label>外貌</label><input id="heroLook" placeholder="随机"></div>
+    <div class="form-group"><label>性格</label><input id="heroPersonality" placeholder="可选，留空则不描写"></div>
+    <div class="form-group"><label>背景</label><input id="heroBackground" placeholder="可选，留空则默认"></div>
+    <div class="form-group"><label>世界观</label><select id="worldSelect">
+        <option value="A">现代校园/职场</option><option value="B">古风宫廷/仙侠</option><option value="C">西幻/异世界</option><option value="D">星际/未来科幻</option>
+        <option value="E">娱乐圈/偶像</option><option value="F">末日/废土</option><option value="G">推理/悬疑</option><option value="H">蒸汽朋克</option>
+        <option value="I">魔法学院</option><option value="J">修真/仙侠</option><option value="K">兽人/亚人</option><option value="L">吸血鬼/狼人</option>
+        <option value="other">✧ 其他（自定义）</option>
+    </select></div>
+    <div class="form-group"><label>世界观备注/期望</label><textarea id="worldCustom" rows="3" placeholder="补充期望"></textarea><div class="hint">◌ 可补充对世界观的期望</div></div>
+    <div class="form-group"><label>⌇ 性取向</label><select id="sexualitySelect">
+        <option value="male">男</option>
+        <option value="female">女</option>
+        <option value="both" selected>男女均可</option>
+    </select></div>
+    <div class="flex-btns"><button id="cancelSetupBtn">取消</button><button id="confirmSetupBtn" class="primary-btn">开始新周目</button></div>
+</div></div>
+
+<div id="nsfwModal" class="modal"><div class="modal-content"><h3>NSFW确认</h3><textarea id="nsfwRuleInput" rows="6"></textarea><div class="flex-btns"><button id="nsfwCancel">取消</button><button id="nsfwConfirm" class="primary-btn">确认生成</button></div></div></div>
+<div id="saveLoadModal" class="modal"><div class="modal-content"><h3 id="modalTitle">存档管理</h3><div id="slotList"></div><button id="closeModalBtn">关闭</button></div></div>
+<div id="summaryModal" class="modal"><div class="modal-content"><h3>☰ 周目总结</h3><div id="summaryContent" class="summary-text"></div><div class="flex-btns"><button id="closeSummaryBtn">关闭</button><button id="downloadSummaryBtn">下载TXT</button></div></div></div>
+<script>
+    // 全局状态
+    let gameState = {
+        world: null, worldType: null, worldCustomNote: "", turnUnit: "一天", currentTurn: 0,
+        heroine: { name: "", nickname: "", personality: "", gender: "女", age: "", appearance: "", background: "", sexuality: "both" },
+        characters: [], mainCharacterIds: [],
+        history: [], conversationHistory: [], narrativeElements: [],
+        writingStyle: "default", isWorldEnded: false, worldEndSummary: ""
+    };
+    
+    // 时间系统全局变量
+    let gameTime = {
+        calendarName: "",
+        year: 1000,
+        month: 1,
+        day: 1,
+        period: "清晨",
+        turnUnit: "一天"
+    };
+    const PERIODS = ["清晨", "上午", "中午", "下午", "傍晚", "夜晚", "深夜"];
+    
+    let apiSettings = { url: "", key: "", model: "" };
+    let saveSlots = Array(6).fill(null).map(() => ({ name: "空槽位", data: null }));
+    let isLoading = false, nextId = 1, testCooldown = false, testTimerInterval = null;
+    let currentAbortController = null;
+    let currentTimerInterval = null;
+    let retryCount = 0;
+    
+    // NSFW剧情状态跟踪
+    let nsfwState = {
+        isActive: false,           // 是否正在进行NSFW剧情
+        isAtNaturalEnd: false,     // 是否到达自然结束点
+        roundsCount: 0             // NSFW持续回合数
+    };
+    
+    // 保存玩家设置的对象
+    let appliedSettings = {
+        nsfwStyle: "euphemism",
+        nsfwCustomReq: "",
+        nsfwForceControl: "auto",
+        writingStylePreset: "default",
+        writingCustomReq: "",
+        perspective: "second",
+        worldName: "",
+        heroineInfo: {},
+        turnUnit: "一天"
+    };
+
+    function getTimestamp() { return new Date().toLocaleString(); }
+    function clean(t) { return (t||"").replace(/[*_~`]/g, ''); }
+    
+    // ========== 时间系统函数 ==========
+    
+    function generateCalendarName(worldName) {
+        if (worldName.includes("西幻") || worldName.includes("异世界") || worldName.includes("魔法")) return "塞拉历";
+        if (worldName.includes("古风") || worldName.includes("仙侠") || worldName.includes("修真")) return "沧澜历";
+        if (worldName.includes("现代") || worldName.includes("校园") || worldName.includes("职场") || worldName.includes("娱乐圈")) return "公元历";
+        if (worldName.includes("星际") || worldName.includes("未来") || worldName.includes("科幻")) return "星历";
+        if (worldName.includes("末日") || worldName.includes("废土")) return "废土历";
+        if (worldName.includes("推理") || worldName.includes("悬疑")) return "现世历";
+        if (worldName.includes("蒸汽朋克")) return "机械历";
+        if (worldName.includes("兽人") || worldName.includes("亚人")) return "部落历";
+        if (worldName.includes("吸血鬼") || worldName.includes("狼人")) return "血月历";
+        return "新历";
+    }
+    
+    function initGameTime(worldName) {
+        gameTime.calendarName = generateCalendarName(worldName);
+        gameTime.year = Math.floor(Math.random() * 8000) + 1000;
+        gameTime.month = 1;
+        gameTime.day = 1;
+        gameTime.period = "清晨";
+        gameTime.turnUnit = gameState.turnUnit;
+    }
+    
+    function formatGameTime() {
+        return `${gameTime.calendarName}${gameTime.year}年${gameTime.month}月${gameTime.day}日 ${gameTime.period}`;
+    }
+    
+    function advancePeriod() {
+        let currentIndex = PERIODS.indexOf(gameTime.period);
+        if (currentIndex === -1) currentIndex = 0;
+        let nextIndex = currentIndex + 1;
+        let crossedDay = false;
+        if (nextIndex >= PERIODS.length) {
+            nextIndex = 0;
+            crossedDay = true;
+        }
+        gameTime.period = PERIODS[nextIndex];
+        return crossedDay;
+    }
+    
+    function advanceDate(days) {
+        for (let i = 0; i < days; i++) {
+            gameTime.day++;
+            if (gameTime.day > 30) {
+                gameTime.day = 1;
+                gameTime.month++;
+                if (gameTime.month > 12) {
+                    gameTime.month = 1;
+                    gameTime.year++;
+                }
+            }
+        }
+    }
+    
+    function advanceGameTime(unit, skipDays = 0) {
+        let daysToAdd = skipDays;
+        if (daysToAdd === 0) {
+            daysToAdd = (unit === "一周") ? 7 : 1;
+        }
+        let crossedDay = advancePeriod();
+        if (crossedDay) {
+            advanceDate(1);
+            daysToAdd--;
+        }
+        if (daysToAdd > 0) {
+            advanceDate(daysToAdd);
+        }
+        if (skipDays > 1 || (skipDays === 0 && unit === "一周")) {
+            gameTime.period = "上午";
+        }
+    }
+    
+    function parseTimeJump(text) {
+        const regex = /【时间跳跃:(\d+)天】/;
+        const match = text.match(regex);
+        if (match) return parseInt(match[1]);
+        return 0;
+    }
+    
+    function updateRoundHeaderTime() {
+        const headerDiv = document.getElementById("roundHeader");
+        const currentHtml = headerDiv.innerHTML;
+        const lines = currentHtml.split('<br>');
+        if (lines.length >= 1) {
+            lines[0] = `<p>☾ 时间：${formatGameTime()}</p>`;
+            headerDiv.innerHTML = lines.join('<br>');
+        } else {
+            headerDiv.innerHTML = `<p>☾ 时间：${formatGameTime()}</p><p>☾ 地点：——</p><p>☾ 在场人物：——</p>`;
+        }
+    }
+    
+    // ========== NSFW剧情状态管理 ==========
+    
+    function updateNSFWStateFromText(text) {
+        if (text.includes('【NSFW:开始】')) {
+            nsfwState.isActive = true;
+            nsfwState.isAtNaturalEnd = false;
+            nsfwState.roundsCount++;
+        }
+        if (text.includes('【NSFW:自然结束点】')) {
+            nsfwState.isAtNaturalEnd = true;
+        }
+        if (text.includes('【NSFW:结束】')) {
+            nsfwState.isActive = false;
+            nsfwState.isAtNaturalEnd = false;
+            nsfwState.roundsCount = 0;
+        }
+        return text.replace(/【NSFW:[^\]]+】/g, '');
+    }
+    
+    // ========== 选项结构检测函数（新增）==========
+    
+    // 检测选项是否符合四选项架构
+    function validateOptionsStructure(text, expectedMode) {
+        const lines = text.split(/\r?\n/);
+        const optionLines = [];
+        for (let line of lines) {
+            const match = line.match(/^\s*([A-Za-z0-9]+)[\.、]\s*(.+)/);
+            if (match) optionLines.push({ code: match[1], text: match[2] });
+        }
+        
+        if (optionLines.length < 4) return false;
+        
+        const firstFour = optionLines.slice(0, 4);
+        
+        if (expectedMode === "force_on") {
+            // 强制开启：检查是否都引导继续NSFW
+            const nsfwKeywords = ["主动", "靠近", "亲吻", "拥抱", "深入", "继续", "缠绵", "暧昧", "升温", "抚摸", "贴近", "推进"];
+            for (let opt of firstFour) {
+                let hasKeyword = nsfwKeywords.some(kw => opt.text.includes(kw));
+                if (!hasKeyword) return false;
+            }
+            return true;
+        }
+        
+        if (expectedMode === "force_off") {
+            // 强制关闭：检查是否都引导结束NSFW
+            const endKeywords = ["整理", "起身", "离开", "转移", "结束", "停止", "穿衣", "日常", "交谈", "散步", "休息"];
+            for (let opt of firstFour) {
+                let hasKeyword = endKeywords.some(kw => opt.text.includes(kw));
+                if (!hasKeyword) return false;
+            }
+            return true;
+        }
+        
+        if (expectedMode === "nsfw_active") {
+            // NSFW进行中：检查A玩家主动/B角色主动/C事件推动/D感情升温
+            // A选项应包含玩家主动相关词
+            const playerKeywords = ["主动", "伸手", "靠近", "亲吻", "拥抱", "抚摸", "推进", "继续"];
+            // B选项应包含角色主动相关词
+            const characterKeywords = ["主动", "靠近", "贴近", "环住", "吻", "抱", "依偎", "靠"];
+            // C选项应包含事件/外部相关词
+            const eventKeywords = ["窗外", "门外", "声音", "脚步声", "光线", "风吹", "突然", "意外", "打断", "刺激"];
+            // D选项应包含感情升温相关词
+            const emotionKeywords = ["感情", "升温", "暧昧", "深情", "呢喃", "低语", "心", "温柔", "深入"];
+            
+            let aValid = playerKeywords.some(kw => firstFour[0].text.includes(kw));
+            let bValid = characterKeywords.some(kw => firstFour[1].text.includes(kw));
+            let cValid = eventKeywords.some(kw => firstFour[2].text.includes(kw));
+            let dValid = emotionKeywords.some(kw => firstFour[3].text.includes(kw));
+            
+            return aValid && bValid && cValid && dValid;
+        }
+        
+        if (expectedMode === "nsfw_natural_end") {
+            // 自然结束点：前三个引导结束，第四个引导继续NSFW
+            const endKeywords = ["结束", "起身", "整理", "穿衣", "离开", "休息", "相拥", "睡"];
+            const continueKeywords = ["再来", "继续", "新一轮", "再次", "重新", "深入", "缠绵"];
+            
+            let abcValid = firstFour[0].text.match(new RegExp(endKeywords.join('|'), 'i')) &&
+                           firstFour[1].text.match(new RegExp(endKeywords.join('|'), 'i')) &&
+                           firstFour[2].text.match(new RegExp(endKeywords.join('|'), 'i'));
+            let dValid = firstFour[3].text.match(new RegExp(continueKeywords.join('|'), 'i'));
+            
+            return abcValid && dValid;
+        }
+        
+        // 日常模式：宽松检查，只要有4个选项即可
+        return true;
+    }
+    
+    // 获取选项结构指令（强化版，放在系统提示最开头）
+    function getOptionsStructureInstr() {
+        const forceValue = document.getElementById("nsfwForceControl").value;
+        const pronoun = getPlayerPronoun();
+        
+        if (forceValue === "force_on") {
+            return `【选项结构强制要求 - 最高优先级】
+你必须输出4个选项，格式为：
+A. [玩家主动] （由${pronoun}主动推动NSFW剧情的具体内容）
+B. [角色主动] （由某位角色主动推动NSFW剧情的具体内容）
+C. [事件推动] （由NPC或外部事件推动NSFW剧情的具体内容）
+D. [感情升温] （引导感情升温或让NSFW剧情更深入的具体内容）
+所有选项都必须引导继续或开始新一轮NSFW剧情。严禁出现结束或转向日常的选项。
+每个选项必须包含对应的类型标签（如 [玩家主动]）。`;
+        }
+        
+        if (forceValue === "force_off") {
+            return `【选项结构强制要求 - 最高优先级】
+你必须输出4个选项，所有选项都必须引导结束NSFW剧情、转向日常发展。
+格式为：A. [结束] （具体内容） / B. [结束] / C. [结束] / D. [结束]
+每个选项必须包含 [结束] 标签。`;
+        }
+        
+        if (nsfwState.isActive && nsfwState.isAtNaturalEnd) {
+            return `【选项结构强制要求 - 最高优先级】
+你必须输出4个选项：
+A. [自然结束] （由${pronoun}主动推动剧情自然结束的具体内容）
+B. [自然结束] （由某位角色主动推动剧情自然结束的具体内容）
+C. [自然结束] （由NPC或外部事件推动剧情自然结束的具体内容）
+D. [继续NSFW] （引导继续或开始新一轮NSFW剧情的具体内容）
+前三个选项必须包含 [自然结束] 标签，第四个选项必须包含 [继续NSFW] 标签。`;
+        }
+        
+        if (nsfwState.isActive) {
+            return `【选项结构强制要求 - 最高优先级】
+你必须输出4个选项，格式为：
+A. [玩家主动] （由${pronoun}主动推动NSFW剧情的具体内容）
+B. [角色主动] （由某位角色主动推动NSFW剧情的具体内容）
+C. [事件推动] （由NPC或外部事件推动NSFW剧情的具体内容）
+D. [感情升温] （引导感情升温或让NSFW剧情更深入的具体内容）
+每个选项必须包含对应的类型标签（如 [玩家主动]）。`;
+        }
+        
+        return `【选项结构强制要求 - 最高优先级】
+你必须输出4个选项，格式为：
+A. [玩家主动] （由${pronoun}主动推动剧情的具体内容）
+B. [角色主动] （由某位角色主动推动剧情的具体内容）
+C. [事件推动] （由NPC或外部事件推动剧情的具体内容）
+D. [感情升温] （引导感情升温或引向暧昧/NSFW的具体内容）
+每个选项必须包含对应的类型标签。`;
+    }
+    
+    // 获取当前人称代词
+    function getPlayerPronoun() {
+        const perspective = document.getElementById("perspectiveSelect").value;
+        if (perspective === "first") return "我";
+        if (perspective === "third") {
+            const gender = gameState.heroine.gender || "女";
+            return gender === "女" ? "她" : "他";
+        }
+        return "你";
+    }
+    
+    // 获取玩家主体地位规则
+    function getPlayerAgencyRule() {
+        return `【玩家主体地位 - 绝对禁止条款 - 最高优先级】
+1. 严禁矮化、弱化、物化、动物化玩家
+2. 严禁使用“柔弱无力”“娇弱无依”等刻板印象描写玩家
+3. 玩家不是被凝视的对象，而是主动的观察者和决策者
+4. 严禁角色将玩家视为自己的所有物
+5. 严禁角色说出“你属于我”“你是我的”等标明玩家从属于角色的话
+6. 玩家始终保持清醒的头脑和自我意志（除非玩家主动选择放弃控制）
+7. 写作视角：以玩家视角为主，玩家是故事的绝对中心
+8. 允许玩家在选项中主动选择“示弱”“依赖”“被保护”等情节，但这必须是玩家主动选择的结果`;
+    }
+    
+    // 获取性别平等规则
+    function getGenderEqualityRule() {
+        return `【性别平等规则 - 必须严格遵守】
+1. NPC中女性角色和男性角色数量各占一半
+2. 掌权人物、重要职位中女性与男性比例均衡
+3. 禁止出现掌权人物全为男性或大部分为男性的情况
+4. 女性角色与男性角色在身份、地位、能力上平等对待
+5. 剧情中体现性别平等意识
+6. 核心角色生成时，根据玩家的性取向选择决定：选择“男”则全为男性，“女”则全为女性，“男女均可”则男女随机混合`;
+    }
+    
+    // 获取性格处理规则
+    function getPersonalityRule() {
+        const personality = gameState.heroine.personality;
+        if (personality && personality !== "" && personality !== "随机") {
+            return `【性格内化规则】玩家设定的性格是“${personality}”。请在剧情中通过行为、反应、思维方式自然展现这一性格，不要直接复述“她/他性格XX”。`;
+        } else {
+            return `【性格处理规则】玩家未设定性格。请不要主动描写玩家的性格特征，让玩家的性格通过玩家的选项选择和自由输入指令自然体现。`;
+        }
+    }
+    
+    function getNSFWForceControlInstr() {
+        const forceValue = document.getElementById("nsfwForceControl").value;
+        const nsfwStyle = document.getElementById("nsfwStyleSelect").value;
+        
+        if (forceValue === "force_on") {
+            if (nsfwStyle === "explicit") {
+                return "【NSFW强制指令】你必须生成包含直白NSFW描写的剧情。所有四个选项都必须引导继续或开始新一轮NSFW剧情。严禁主动结束NSFW。";
+            } else {
+                return "【NSFW强制指令】你必须生成包含亲密互动的剧情，使用诗意、隐喻的方式描写。所有四个选项都必须引导继续或开始新一轮NSFW剧情。严禁主动结束NSFW。";
+            }
+        } else if (forceValue === "force_off") {
+            return "【NSFW强制指令】你必须完全避免任何NSFW内容。所有四个选项都必须引导结束NSFW、转向日常剧情。";
+        } else {
+            return "【NSFW指令】请根据剧情自然发展，自行决定是否包含NSFW内容。";
+        }
+    }
+    
+    function getNSFWStyleInstr() {
+        const style = document.getElementById("nsfwStyleSelect").value;
+        const customReq = document.getElementById("nsfwCustomReq").value.trim();
+        if (style === "explicit") {
+            let instr = "【NSFW描写风格】允许使用直白的身体描写，可以描写性器官，但避免粗俗、侮辱性词汇，注重情感与氛围。";
+            if (customReq) instr += ` 额外要求：${customReq}`;
+            return instr;
+        } else {
+            let instr = "【NSFW描写风格】使用诗意、隐喻、意识流方式简略描写，留白为主，不直白描写身体部位。";
+            if (customReq) instr += ` 额外要求：${customReq}`;
+            return instr;
+        }
+    }
+    
+    function getPerspectiveInstr() {
+        const perspective = document.getElementById("perspectiveSelect").value;
+        const playerName = gameState.heroine.name || "玩家";
+        if (perspective === "first") {
+            return "【人称硬性规则】你必须使用第一人称“我”来指代玩家。所有叙述和选项中的玩家指代都用“我”。";
+        } else if (perspective === "third") {
+            const gender = gameState.heroine.gender || "女";
+            const pronoun = gender === "女" ? "她" : "他";
+            return `【人称硬性规则】你必须使用第三人称“${pronoun}”来指代玩家。你可以使用玩家姓名“${playerName}”来代替“${pronoun}”。角色对话中正常使用“你”称呼玩家。选项中的玩家指代使用“${pronoun}”或“${playerName}”。`;
+        } else {
+            return "【人称硬性规则】你必须使用第二人称“你”来指代玩家。所有叙述和选项中的玩家指代都用“你”。";
+        }
+    }
+    
+    function getAddressingRule() {
+        const name = gameState.heroine.name || "玩家";
+        const nickname = gameState.heroine.nickname || "";
+        const gender = gameState.heroine.gender || "女";
+        const genderTitle = gender === "女" ? "小姐/姑娘/女士" : "先生";
+        let rule = `【角色称呼规则】\n`;
+        rule += `1. 角色可以根据关系称呼玩家填写的姓名：${name}。\n`;
+        if (nickname) rule += `2. 角色与玩家关系亲近后可以称呼昵称：${nickname}，或称呼“亲爱的”。\n`;
+        rule += `3. 根据玩家性别（${gender}），角色可以使用“${genderTitle}”等礼貌称谓。\n`;
+        rule += `4. 绝对禁止使用任何侮辱性词汇。\n`;
+        rule += `5. 性格活泼、自来熟的角色可以从一开始就使用昵称；性格礼貌、有疏离感的角色在关系亲近后再使用昵称。\n`;
+        return rule;
+    }
+    
+    function getReproductiveRightsRule() {
+        const gender = gameState.heroine.gender || "女";
+        if (gender === "女") {
+            return `【女性生育自主权 - 绝对规则】
+- 生育是女性的权利，必须出于自愿
+- 严禁任何角色强迫、施压、诱导女性玩家生育
+- 如果剧情涉及相关话题，必须给玩家提供选择选项
+- 玩家有权选择是否生育，任何角色必须尊重`;
+        } else {
+            return `【生育自主权规则】涉及生育话题时，尊重所有当事人的选择权，禁止强迫任何人生育。`;
+        }
+    }
+    
+    function getStyleInstr() {
+        const preset = document.getElementById("writingStyleSelect").value;
+        const customReq = document.getElementById("writingCustomReq").value.trim();
+        let base = "";
+        if (preset === "custom" && customReq) {
+            if (customReq.includes("【") && customReq.includes("】")) {
+                const match = customReq.match(/【(.*?)】/);
+                if (match) base = `请严格模仿以下文本的风格进行写作：\n${match[1]}\n`;
+                else base = `写作要求：${customReq}`;
+            } else base = `写作要求：${customReq}`;
+        } else {
+            const styleMap = { 
+                classical: "古风典雅，辞藻优美", 
+                modern: "现代轻快，口语自然", 
+                relaxed: "轻松治愈，温馨日常", 
+                detailed: "细腻描写，注重细节", 
+                default: "自然优美的散文风格，富有文学性" 
+            };
+            base = `请使用${styleMap[preset]||"自然优美的散文风格"}进行写作。`;
+        }
+        const rhythmRule = `
+【写作格式要求】
+1. 段落控制：严禁超长段落或超短段落，段落应长短错落。
+2. 对话处理：不同人物对话独立成段；将神态、动作、心理与语言结合在同一段。
+3. 关键转折、重磅台词必须独立成段，前后留白。`;
+        return base + "\n" + rhythmRule;
+    }
+    
+    function saveSettings() {
+        appliedSettings.nsfwStyle = document.getElementById("nsfwStyleSelect").value;
+        appliedSettings.nsfwCustomReq = document.getElementById("nsfwCustomReq").value;
+        appliedSettings.nsfwForceControl = document.getElementById("nsfwForceControl").value;
+        appliedSettings.writingStylePreset = document.getElementById("writingStyleSelect").value;
+        appliedSettings.writingCustomReq = document.getElementById("writingCustomReq").value.trim();
+        appliedSettings.perspective = document.getElementById("perspectiveSelect").value;
+        appliedSettings.worldName = gameState.world || "未初始化";
+        appliedSettings.heroineInfo = { ...gameState.heroine };
+        appliedSettings.turnUnit = gameState.turnUnit;
+        localStorage.setItem("wenyou_appliedSettings", JSON.stringify(appliedSettings));
+        alert("✓ 设置已保存！");
+    }
+    
+    async function checkSettings() {
+        if(!apiSettings.key) { alert("请先配置API Key"); return; }
+        if(!apiSettings.url) { alert("请先配置API地址"); return; }
+        if(!apiSettings.model) { alert("请先选择模型"); return; }
+        
+        const checkMsg = `请用一句话确认你收到了所有设置要求，包括玩家主体地位、性别平等、选项结构等。回复：“已收到，将严格遵守。”`;
+        try {
+            const resp = await callAI([{role:"user", content:checkMsg}], null, 0.5);
+            alert(`✓ 设置检查完成！\n\nAI确认：${resp.substring(0, 150)}`);
+        } catch(e) {
+            alert(`✗ 设置检查失败：${e.message}`);
+        }
+    }
+    
+    function loadAppliedSettings() {
+        try {
+            const saved = localStorage.getItem("wenyou_appliedSettings");
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                appliedSettings = { ...appliedSettings, ...parsed };
+                document.getElementById("nsfwStyleSelect").value = appliedSettings.nsfwStyle;
+                document.getElementById("nsfwCustomReq").value = appliedSettings.nsfwCustomReq;
+                document.getElementById("nsfwForceControl").value = appliedSettings.nsfwForceControl || "auto";
+                document.getElementById("writingStyleSelect").value = appliedSettings.writingStylePreset;
+                document.getElementById("writingCustomReq").value = appliedSettings.writingCustomReq;
+                document.getElementById("perspectiveSelect").value = appliedSettings.perspective || "second";
+            }
+        } catch(e) { console.warn("加载保存的设置失败", e); }
+    }
+    
+    function parseHiddenCharacterInfo(text) {
+        const regex = /<!--\s*新角色:\s*姓名[：:]\s*([^,，\n]+)[,，\s]*性别[：:]\s*([^,，\n]+)[,，\s]*类型[：:]\s*([^,，\n]+)[,，\s]*简介[：:]\s*([^，\n]+)[,，\s]*好感[：:]\s*(\d+)\s*-->/gi;
+        let added = false;
+        for (const m of text.matchAll(regex)) {
+            const name = clean(m[1]);
+            const gender = clean(m[2]);
+            const type = clean(m[3]);
+            const desc = clean(m[4]);
+            const favor = parseInt(m[5]) || 70;
+            if (!gameState.characters.some(c=>c.name===name)) {
+                const sexuality = gameState.heroine.sexuality || "both";
+                const isMain = gameState.characters.length < 6;
+                let shouldInclude = true;
+                if (sexuality === "male" && isMain && gender !== "男") shouldInclude = false;
+                if (sexuality === "female" && isMain && gender !== "女") shouldInclude = false;
+                if (shouldInclude) {
+                    const newId = Date.now() + Math.random() * 10000;
+                    gameState.characters.push({ name, gender, type, desc, favor, avatar: "◇", isMain, id: newId });
+                    if (isMain) gameState.mainCharacterIds.push(newId);
+                    added = true;
+                }
+            } else {
+                const existing = gameState.characters.find(c=>c.name===name);
+                if (existing && existing.favor < favor) existing.favor = favor;
+                added = true;
+            }
+        }
+        if (added) updateUI();
+        return text.replace(/<!--[\s\S]*?-->/g, '');
+    }
+    
+    function containsForbiddenPersonalityPattern(text, personality) {
+        if (!personality || personality === "" || personality === "随机") return false;
+        const keywords = personality.split(/[，,、]/).map(k => k.trim()).filter(k => k.length > 0);
+        const forbiddenPatterns = [
+            new RegExp(`[她他你]${keywords[0] || personality}的性子`, 'i'),
+            new RegExp(`${keywords[0] || personality}的性格`, 'i'),
+            new RegExp(`性格${keywords[0] || personality}`, 'i'),
+            new RegExp(`性子${keywords[0] || personality}`, 'i')
+        ];
+        for (let pattern of forbiddenPatterns) {
+            if (pattern.test(text)) return true;
+        }
+        return false;
+    }
+    
+    function updateUI() {
+        document.getElementById("worldName").innerText = gameState.world || "未初始化";
+        document.getElementById("turnInfo").innerHTML = `第${gameState.currentTurn}回合 (${gameState.turnUnit})`;
+        const sexualityMap = { male: "♂男", female: "♀女", both: "⚥均可" };
+        const heroineStr = `${gameState.heroine.name||"未命名"}${gameState.heroine.nickname?"（"+gameState.heroine.nickname+"）":""} · ${gameState.heroine.personality||"?"} · ${sexualityMap[gameState.heroine.sexuality]||""}`;
+        document.getElementById("heroineInfo").innerHTML = heroineStr;
+        const grid = document.getElementById("characterGrid");
+        let cardsHtml = [];
+        const heroine = gameState.heroine;
+        const heroName = heroine.name && heroine.name !== "" ? heroine.name : "未设定旅者";
+        const heroNick = heroine.nickname ? `（${heroine.nickname}）` : "";
+        const heroGender = heroine.gender || "?";
+        const heroAge = heroine.age || "?";
+        const heroLook = heroine.appearance && heroine.appearance !== "" ? heroine.appearance : "未设定";
+        const heroPersonality = heroine.personality && heroine.personality !== "" ? heroine.personality : "待定";
+        const heroBg = heroine.background && heroine.background !== "" ? heroine.background : "——";
+        const heroDesc = `${heroPersonality} · ${heroLook} · ${heroBg}`.substring(0, 80);
+        cardsHtml.push(`
+            <div class="character-card">
+                <div class="char-avatar">✧</div>
+                <div class="char-info">
+                    <div class="char-name">【你】${heroName}${heroNick} (${heroGender}/${heroAge}岁)</div>
+                    <div class="char-type">◇ 主角·旅人 ◇</div>
+                    <div class="char-desc">${heroDesc}</div>
+                    <div class="char-favor">♡ 命运之线</div>
+                </div>
+            </div>
+        `);
+        if (gameState.characters.length) {
+            const mainChars = gameState.characters.filter(c => gameState.mainCharacterIds.includes(c.id));
+            const otherChars = gameState.characters.filter(c => !gameState.mainCharacterIds.includes(c.id));
+            const sorted = [...mainChars, ...otherChars];
+            for (let c of sorted) {
+                const isMain = gameState.mainCharacterIds.includes(c.id);
+                cardsHtml.push(`
+                <div class="character-card">
+                    <div class="char-avatar">${c.avatar || "◇"}</div>
+                    <div class="char-info">
+                        <div class="char-name">${c.name} (${c.gender||"?"}) ${isMain ? '<span class="star">★</span>' : ''}</div>
+                        <div class="char-type">${c.type||"未知"}</div>
+                        <div class="char-desc">${c.desc||""}</div>
+                        <div class="char-favor">♡ 好感 ${c.favor}</div>
+                    </div>
+                </div>`);
+            }
+        }
+        if (cardsHtml.length === 1 && (!gameState.heroine.name || gameState.heroine.name === "")) {
+            cardsHtml.push(`<div class="character-card" style="opacity:0.7;"><div class="char-avatar">▣</div><div class="char-info"><div class="char-name">尚未创建主角</div><div class="char-desc">请点击「初始化」开始旅程</div></div></div>`);
+        }
+        grid.innerHTML = cardsHtml.join('');
+    }
+    
+    function showGeneratingPlaceholderWithCancel(abortController) {
+        const container = document.getElementById("narrativeText");
+        const placeholderDiv = document.createElement("div");
+        placeholderDiv.className = "message-block generating-placeholder";
+        placeholderDiv.id = "generatingPlaceholder";
+        
+        const contentDiv = document.createElement("div");
+        contentDiv.className = "message-content";
+        contentDiv.innerHTML = '<em>⌛ 正在生成中... (<span id="generatingTimer">0</span>秒)</em>';
+        placeholderDiv.appendChild(contentDiv);
+        
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = "narrative-actions";
+        const cancelBtn = document.createElement("button");
+        cancelBtn.textContent = "✗ 取消生成";
+        cancelBtn.onclick = () => {
+            if (abortController) abortController.abort();
+            if (currentTimerInterval) clearInterval(currentTimerInterval);
+            if (placeholderDiv && placeholderDiv.parentNode) placeholderDiv.remove();
+            isLoading = false;
+            alert("已取消生成");
+        };
+        actionsDiv.appendChild(cancelBtn);
+        placeholderDiv.appendChild(actionsDiv);
+        
+        container.appendChild(placeholderDiv);
+        container.scrollTop = container.scrollHeight;
+        
+        let seconds = 0;
+        const timerSpan = document.getElementById("generatingTimer");
+        if (currentTimerInterval) clearInterval(currentTimerInterval);
+        currentTimerInterval = setInterval(() => {
+            seconds++;
+            if (timerSpan) timerSpan.textContent = seconds;
+        }, 1000);
+        
+        return placeholderDiv;
+    }
+    
+    function hideGeneratingPlaceholder() {
+        if (currentTimerInterval) clearInterval(currentTimerInterval);
+        currentTimerInterval = null;
+        const ph = document.getElementById("generatingPlaceholder");
+        if (ph) ph.remove();
+    }
+    
+    function addChoiceResult(choiceCode, choiceText) {
+        const container = document.getElementById("narrativeText");
+        const resultDiv = document.createElement("div");
+        resultDiv.className = "message-block choice-result";
+        resultDiv.innerHTML = `<div class="message-content">▌ 选择结果：${choiceCode}. ${choiceText}</div>`;
+        container.appendChild(resultDiv);
+        container.scrollTop = container.scrollHeight;
+        gameState.narrativeElements.push({
+            id: nextId++,
+            userMessage: null,
+            content: `▌ 选择结果：${choiceCode}. ${choiceText}`,
+            messageBlock: resultDiv,
+            isChoiceResult: true
+        });
+    }
+    
+    function addMessage(content, userMsg, isUser=false, id=null, skipAutoSave=false) {
+        content = updateNSFWStateFromText(content);
+        let displayContent = parseHiddenCharacterInfo(content);
+        const container = document.getElementById("narrativeText");
+        const block = document.createElement("div"); block.className = "message-block";
+        const txtDiv = document.createElement("div"); txtDiv.className = "message-content";
+        txtDiv.innerHTML = displayContent.replace(/\n/g,'<br>');
+        block.appendChild(txtDiv);
+        const actions = document.createElement("div"); actions.className = "narrative-actions";
+        const msgId = id || nextId++;
+        if (!isUser && userMsg && !userMsg.startsWith(">")) {
+            const regBtn = document.createElement("button"); regBtn.textContent="↺重新生成"; regBtn.onclick=()=>regenerate(msgId);
+            const editBtn = document.createElement("button"); editBtn.textContent="✎编辑"; editBtn.onclick=()=>editMsg(msgId);
+            const delBtn = document.createElement("button"); delBtn.textContent="⌧删除"; delBtn.onclick=()=>deleteMsg(msgId);
+            const timer = document.createElement("span"); timer.className="timer"; let sec=60; const iv=setInterval(()=>{if(--sec<=0){timer.textContent="0秒";clearInterval(iv);}else timer.textContent=sec+"秒";},1000);
+            actions.append(regBtn, editBtn, delBtn, timer);
+            gameState.narrativeElements.push({id:msgId, userMessage:userMsg, content:displayContent, messageBlock:block, timerInterval:iv});
+        } else {
+            const delBtn = document.createElement("button"); delBtn.textContent="⌧删除"; delBtn.onclick=()=>deleteMsg(msgId);
+            actions.appendChild(delBtn);
+            gameState.narrativeElements.push({id:msgId, userMessage:userMsg, content:displayContent, messageBlock:block});
+        }
+        block.appendChild(actions);
+        container.appendChild(block);
+        container.scrollTop = container.scrollHeight;
+        if (!isUser && userMsg && !userMsg.startsWith(">")) {
+            gameState.conversationHistory.push({role:"user", content:userMsg}, {role:"assistant", content:displayContent});
+            gameState.history.push(displayContent);
+        } else if(isUser) gameState.history.push(`> ${displayContent}`);
+        if (!skipAutoSave) autoSave();
+        renderOptions(displayContent);
+        checkAndEndWorld();
+    }
+    function rebuildUIFromState() {
+        const container = document.getElementById("narrativeText");
+        container.innerHTML = "";
+        nextId = 1;
+        for (let elem of gameState.narrativeElements) {
+            const isUser = elem.userMessage && elem.userMessage.startsWith(">");
+            const isChoiceResult = elem.isChoiceResult === true;
+            const block = document.createElement("div"); 
+            block.className = "message-block" + (isChoiceResult ? " choice-result" : "");
+            const txtDiv = document.createElement("div"); txtDiv.className = "message-content";
+            txtDiv.innerHTML = elem.content.replace(/\n/g,'<br>');
+            block.appendChild(txtDiv);
+            const actions = document.createElement("div"); actions.className = "narrative-actions";
+            if (!isUser && !isChoiceResult && elem.userMessage && !elem.userMessage.startsWith(">")) {
+                const regBtn = document.createElement("button"); regBtn.textContent="↺重新生成"; regBtn.onclick=()=>regenerate(elem.id);
+                const editBtn = document.createElement("button"); editBtn.textContent="✎编辑"; editBtn.onclick=()=>editMsg(elem.id);
+                const delBtn = document.createElement("button"); delBtn.textContent="⌧删除"; delBtn.onclick=()=>deleteMsg(elem.id);
+                const timer = document.createElement("span"); timer.className="timer"; let sec=60; const iv=setInterval(()=>{if(--sec<=0){timer.textContent="0秒";clearInterval(iv);}else timer.textContent=sec+"秒";},1000);
+                actions.append(regBtn, editBtn, delBtn, timer);
+                elem.timerInterval = iv;
+                elem.messageBlock = block;
+            } else if (!isChoiceResult) {
+                const delBtn = document.createElement("button"); delBtn.textContent="⌧删除"; delBtn.onclick=()=>deleteMsg(elem.id);
+                actions.appendChild(delBtn);
+                elem.messageBlock = block;
+            } else {
+                const delBtn = document.createElement("button"); delBtn.textContent="⌧删除"; delBtn.onclick=()=>deleteMsg(elem.id);
+                actions.appendChild(delBtn);
+                elem.messageBlock = block;
+            }
+            if (!isChoiceResult || (isChoiceResult && actions.children.length > 0)) {
+                block.appendChild(actions);
+            }
+            container.appendChild(block);
+        }
+        updateUI();
+        const lastAiMsg = [...gameState.narrativeElements].reverse().find(e => e.userMessage && !e.userMessage.startsWith(">") && !e.isChoiceResult);
+        if (lastAiMsg) renderOptions(lastAiMsg.content);
+    }
+    
+    async function regenerate(id) {
+        const elem = gameState.narrativeElements.find(e=>e.id===id);
+        if(!elem||!elem.userMessage) return;
+        if(isLoading) return;
+        isLoading=true;
+        currentAbortController = new AbortController();
+        const ph = showGeneratingPlaceholderWithCancel(currentAbortController);
+        deleteMsg(id, true);
+        try {
+            const newResp = await callAI([{role:"user", content:elem.userMessage}], currentAbortController.signal);
+            hideGeneratingPlaceholder();
+            addMessage(newResp, elem.userMessage);
+            renderOptions(newResp);
+        } catch(e) { 
+            if (e.name !== 'AbortError') {
+                hideGeneratingPlaceholder(); 
+                alert(`重新生成失败: ${e.message}`);
+            } else {
+                hideGeneratingPlaceholder();
+            }
+        }
+        isLoading=false;
+        currentAbortController = null;
+    }
+    
+    async function editMsg(id) {
+        const elem = gameState.narrativeElements.find(e=>e.id===id);
+        if(!elem) return;
+        const newTxt = prompt("编辑剧情", elem.content);
+        if(newTxt) {
+            elem.content = newTxt;
+            elem.messageBlock.querySelector(".message-content").innerHTML = newTxt.replace(/\n/g,'<br>');
+            parseHiddenCharacterInfo(newTxt);
+            renderOptions(newTxt);
+            autoSave();
+        }
+    }
+    
+    function deleteMsg(id, skipAutoSave=false) {
+        const idx = gameState.narrativeElements.findIndex(e=>e.id===id);
+        if(idx===-1) return;
+        const e = gameState.narrativeElements[idx];
+        if(e.timerInterval) clearInterval(e.timerInterval);
+        if(e.messageBlock && e.messageBlock.parentNode) e.messageBlock.remove();
+        gameState.narrativeElements.splice(idx,1);
+        rebuildHistory();
+        if (!skipAutoSave) autoSave();
+    }
+    
+    function rebuildHistory() {
+        gameState.conversationHistory = [];
+        gameState.history = [];
+        for(let e of gameState.narrativeElements) {
+            if(e.userMessage && !e.userMessage.startsWith(">") && !e.isChoiceResult) {
+                gameState.conversationHistory.push({role:"user", content:e.userMessage}, {role:"assistant", content:e.content});
+                gameState.history.push(e.content);
+            } else if(e.userMessage && e.userMessage.startsWith(">")) gameState.history.push(`> ${e.content}`);
+        }
+    }
+    
+    async function callAI(newMessages, signal=null, temp=0.85, retry=0) {
+        if(!apiSettings.key) throw new Error("未配置API Key");
+        if(!apiSettings.url) throw new Error("未配置API地址");
+        if(!apiSettings.model) throw new Error("未选择模型");
+        
+        const worldNote = gameState.worldCustomNote ? `\n【玩家对世界观的备注/期望】：${gameState.worldCustomNote}\n请结合以上备注生成剧情。` : "";
+        const nsfwInstr = getNSFWStyleInstr();
+        const nsfwForceInstr = getNSFWForceControlInstr();
+        const optionsInstr = getOptionsStructureInstr();
+        const styleInstr = getStyleInstr();
+        const perspectiveInstr = getPerspectiveInstr();
+        const addressingRule = getAddressingRule();
+        const playerAgencyRule = getPlayerAgencyRule();
+        const genderEqualityRule = getGenderEqualityRule();
+        const personalityRule = getPersonalityRule();
+        const reproductiveRights = getReproductiveRightsRule();
+        
+        const sysPrompt = `你是一款快穿文字游戏AI。
+【最重要的硬性规则 - 必须100%遵守，违反即无效】
+${optionsInstr}
+${playerAgencyRule}
+${genderEqualityRule}
+${personalityRule}
+${perspectiveInstr}
+${addressingRule}
+${reproductiveRights}
+${nsfwForceInstr}
+${nsfwInstr}
+${styleInstr}
+
+【时间系统规则】
+- 当前时间：${formatGameTime()}
+- 如果需要推进时间，请在剧情中用【时间跳跃:X天】标记
+- 时间只能前进不能倒退
+
+【NSFW状态标记规则】
+- 当NSFW剧情开始时，请用【NSFW:开始】标记
+- 当你判断NSFW剧情到达自然结束点时，请用【NSFW:自然结束点】标记
+- 当NSFW剧情结束时，请用【NSFW:结束】标记
+- 严禁AI主动结束NSFW剧情，只能通过标记告知状态
+
+【格式要求】
+每回合开头标【时间：】【地点：】【在场人物：】。
+【角色信息传递】用HTML注释输出：<!-- 新角色: 姓名:xx, 性别:x, 类型:xx, 简介:xx, 好感:xx -->
+【字数要求】每回合剧情正文1200-1800字。
+【剧情连贯】严格基于上一回合结尾继续发展。
+
+当前世界：${gameState.world}${worldNote}
+玩家信息：姓名${gameState.heroine.name}${gameState.heroine.nickname ? "，昵称"+gameState.heroine.nickname : ""}，${gameState.heroine.gender}，${gameState.heroine.age}岁${gameState.heroine.personality ? "，性格"+gameState.heroine.personality : ""}
+性取向：${gameState.heroine.sexuality === "male" ? "男性" : gameState.heroine.sexuality === "female" ? "女性" : "男女均可"}
+已结识角色：${gameState.characters.map(c=>c.name).join(',')||'无'}`;
+        
+        const fullMessages = [
+            { role: "system", content: sysPrompt },
+            ...gameState.conversationHistory,
+            ...newMessages
+        ];
+        
+        const payload = { model: apiSettings.model, messages: fullMessages, temperature: temp, max_tokens: 2800 };
+        
+        const fetchOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${apiSettings.key}` },
+            body: JSON.stringify(payload)
+        };
+        if (signal) fetchOptions.signal = signal;
+        
+        const resp = await fetch(apiSettings.url, fetchOptions);
+        if(!resp.ok) { 
+            if(resp.status===429 && retry<2){ await new Promise(r=>setTimeout(r,3000)); return callAI(newMessages, signal, temp, retry+1); } 
+            const errText = await resp.text();
+            throw new Error(`API ${resp.status}: ${errText.substring(0,100)}`); 
+        }
+        const data = await resp.json();
+        return data.choices[0].message.content;
+    }
+    
+    async function testAPIConnection() {
+        if(testCooldown) { alert("请等待倒计时结束后再测试"); return; }
+        const url = document.getElementById("apiUrl").value;
+        const key = document.getElementById("apiKey").value;
+        const model = document.getElementById("modelSelect").value;
+        if(!key) { alert("请先填写API Key"); return; }
+        if(!url) { alert("请先填写API地址"); return; }
+        if(!model) { alert("请先拉取模型或手动选择模型"); return; }
+        
+        const testBtn = document.getElementById("testApiBtn");
+        const originalText = testBtn.textContent;
+        let remaining = 60;
+        testCooldown = true;
+        testBtn.disabled = true;
+        
+        const countdownInterval = setInterval(() => {
+            if(remaining <= 1) {
+                clearInterval(countdownInterval);
+                testBtn.textContent = originalText;
+                testBtn.disabled = false;
+                testCooldown = false;
+            } else {
+                remaining--;
+                testBtn.textContent = `测试API ${remaining}秒`;
+            }
+        }, 1000);
+        
+        const testSettings = { url, key, model };
+        const testMsg = [{ role: "user", content: "请回复：连接成功，测试通过。" }];
+        const testPrompt = { model: testSettings.model, messages: testMsg, temperature: 0.5, max_tokens: 50 };
+        try {
+            const resp = await fetch(testSettings.url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${testSettings.key}` },
+                body: JSON.stringify(testPrompt)
+            });
+            if(!resp.ok) {
+                const err = await resp.text();
+                throw new Error(`HTTP ${resp.status}: ${err.substring(0,100)}`);
+            }
+            const data = await resp.json();
+            const reply = data.choices[0].message.content;
+            alert(`✓ API测试成功！\n模型回复：${reply}`);
+        } catch(e) {
+            alert(`✗ API测试失败\n错误信息：${e.message}\n\n请检查：\n1. API地址是否正确\n2. API Key是否有效\n3. 模型名称是否支持`);
+        }
+    }
+    
+    // 获取当前期望的选项模式（用于验证）
+    function getExpectedOptionMode() {
+        const forceValue = document.getElementById("nsfwForceControl").value;
+        if (forceValue === "force_on") return "force_on";
+        if (forceValue === "force_off") return "force_off";
+        if (nsfwState.isActive && nsfwState.isAtNaturalEnd) return "nsfw_natural_end";
+        if (nsfwState.isActive) return "nsfw_active";
+        return "normal";
+    }
+    
+    async function nextTurn() {
+        if(gameState.isWorldEnded){alert("本周目已结束");return;}
+        if(!gameState.world){alert("请先初始化世界。");return;}
+        if(isLoading)return;
+        isLoading=true;
+        currentAbortController = new AbortController();
+        showGeneratingPlaceholderWithCancel(currentAbortController);
+        
+        advanceGameTime(gameState.turnUnit, 0);
+        updateRoundHeaderTime();
+        
+        const currentTimeStr = formatGameTime();
+        const optionsHint = getOptionsStructureInstr();
+        const userMsg = `现在是第${gameState.currentTurn+1}回合，当前时间：${currentTimeStr}，时间流逝了${gameState.turnUnit}。
+请生成从上一段剧情结束到现在这段时间内发生的故事，填充时间跳跃中间的事件。
+请生成剧情（1200-1800字），保持叙事自然流畅。
+${optionsHint}
+如果需要进一步推进时间，请在剧情中用【时间跳跃:X天】标记。`;
+        try{
+            let resp=await callAI([{role:"user", content:userMsg}], currentAbortController.signal);
+            
+            const jumpDays = parseTimeJump(resp);
+            if (jumpDays > 0) {
+                advanceGameTime(gameState.turnUnit, jumpDays);
+                updateRoundHeaderTime();
+                resp = resp.replace(/【时间跳跃:\d+天】/g, '');
+            }
+            
+            resp = updateNSFWStateFromText(resp);
+            
+            // 选项结构验证和自动重试
+            const expectedMode = getExpectedOptionMode();
+            if (!validateOptionsStructure(resp, expectedMode) && retryCount < 1) {
+                retryCount++;
+                hideGeneratingPlaceholder();
+                showGeneratingPlaceholderWithCancel(currentAbortController);
+                const retryMsg = userMsg + `\n\n【重要提醒】上一轮回复中的选项不符合要求的格式。请严格按照以下格式输出4个选项：
+${optionsHint}
+请重新生成，确保每个选项都包含对应的类型标签。`;
+                resp = await callAI([{role:"user", content:retryMsg}], currentAbortController.signal);
+                retryCount = 0;
+            }
+            
+            if (containsForbiddenPersonalityPattern(resp, gameState.heroine.personality) && retryCount < 1) {
+                retryCount++;
+                hideGeneratingPlaceholder();
+                showGeneratingPlaceholderWithCancel(currentAbortController);
+                const retryMsg = userMsg + "\n\n【重要提醒】上一轮回复中出现了禁止的直接性格描述，请避免这种写法。";
+                resp = await callAI([{role:"user", content:retryMsg}], currentAbortController.signal);
+                retryCount = 0;
+            }
+            
+            if(!resp.match(/[A-Za-z0-9][\.、]\s*.+/)) {
+                const forceValue = document.getElementById("nsfwForceControl").value;
+                const pronoun = getPlayerPronoun();
+                if (forceValue === "force_on") {
+                    resp += `\n\n请选择：\nA. [玩家主动] ${pronoun}主动靠近\nB. [角色主动] 对方主动贴近\nC. [事件推动] 气氛更加暧昧\nD. [感情升温] 深入下去`;
+                } else if (forceValue === "force_off") {
+                    resp += `\n\n请选择：\nA. [结束] 整理衣衫\nB. [结束] 转移话题\nC. [结束] 起身离开\nD. [结束] 结束当前氛围`;
+                } else if (nsfwState.isActive && nsfwState.isAtNaturalEnd) {
+                    resp += `\n\n请选择：\nA. [自然结束] 自然结束\nB. [自然结束] 相拥而眠\nC. [自然结束] 起身离开\nD. [继续NSFW] 再来一次`;
+                } else if (nsfwState.isActive) {
+                    resp += `\n\n请选择：\nA. [玩家主动] ${pronoun}主动推进\nB. [角色主动] 对方主动靠近\nC. [事件推动] 外界刺激\nD. [感情升温] 让气氛更浓`;
+                } else {
+                    resp += `\n\n请选择：\nA. [玩家主动] 继续前行\nB. [角色主动] 与某人交谈\nC. [事件推动] 观察周围\nD. [感情升温] 静心感受`;
+                }
+            }
+            
+            const t=resp.match(/时间[：:]\s*(.+)/); const l=resp.match(/地点[：:]\s*(.+)/); const c=resp.match(/在场人物[：:]\s*(.+)/);
+            if(t){
+                const headerDiv = document.getElementById("roundHeader");
+                const currentHtml = headerDiv.innerHTML;
+                const lines = currentHtml.split('<br>');
+                if (lines.length >= 1) lines[0] = `<p>☾ 时间：${t[1]}</p>`;
+                headerDiv.innerHTML = lines.join('<br>');
+            } else {
+                updateRoundHeaderTime();
+            }
+            if(l)document.getElementById("roundHeader").innerHTML = document.getElementById("roundHeader").innerHTML.replace(/<p>☾ 地点：.*?<\/p>/, `<p>☾ 地点：${l[1]}</p>`);
+            if(c)document.getElementById("roundHeader").innerHTML = document.getElementById("roundHeader").innerHTML.replace(/<p>☾ 在场人物：.*?<\/p>/, `<p>☾ 在场人物：${c[1]}</p>`);
+            hideGeneratingPlaceholder();
+            addMessage(resp, userMsg);
+            gameState.currentTurn++;
+            updateUI();
+            autoSave();
+            if(gameState.currentTurn%10===0) manualSaveToSlot(0,"自动存档");
+        }catch(e){ 
+            if (e.name !== 'AbortError') {
+                hideGeneratingPlaceholder(); 
+                alert(`推进失败: ${e.message}`);
+            } else {
+                hideGeneratingPlaceholder();
+            }
+        }
+        isLoading=false;
+        currentAbortController = null;
+    }
+    
+    async function startNewWorld(setup) {
+        if(!apiSettings.key||!apiSettings.url||!apiSettings.model) { alert("请先配置API"); return; }
+        gameState.heroine={ 
+            name: setup.name, 
+            nickname: setup.nickname || "",
+            personality: setup.personality || "",
+            gender: setup.gender, 
+            age: setup.age, 
+            appearance: setup.look, 
+            background: setup.background,
+            sexuality: setup.sexuality || "both"
+        };
+        gameState.world=setup.world; 
+        gameState.worldType=setup.worldRaw; 
+        gameState.worldCustomNote=setup.worldCustomNote;
+        gameState.currentTurn=0; 
+        gameState.characters=[]; 
+        gameState.mainCharacterIds=[]; 
+        gameState.history=[]; 
+        gameState.conversationHistory=[]; 
+        gameState.narrativeElements=[]; 
+        gameState.isWorldEnded=false;
+        
+        nsfwState = { isActive: false, isAtNaturalEnd: false, roundsCount: 0 };
+        
+        const fastWorlds=["现代校园/职场","娱乐圈/偶像","推理/悬疑","末日/废土","蒸汽朋克"];
+        const slowWorlds=["古风宫廷/仙侠","西幻/异世界","星际/未来科幻","魔法学院","修真/仙侠","兽人/亚人","吸血鬼/狼人"];
+        if(fastWorlds.some(w=>setup.world.includes(w))) gameState.turnUnit="一天";
+        else if(slowWorlds.some(w=>setup.world.includes(w))) gameState.turnUnit="一周";
+        else gameState.turnUnit="一天";
+        
+        initGameTime(setup.world);
+        updateRoundHeaderTime();
+        
+        updateUI();
+        currentAbortController = new AbortController();
+        showGeneratingPlaceholderWithCancel(currentAbortController);
+        const worldNoteText=setup.worldCustomNote?`\n玩家对世界观的额外期望：${setup.worldCustomNote}`:"";
+        const currentTimeStr = formatGameTime();
+        const sexualityText = setup.sexuality === "male" ? "（核心角色限定为男性）" : setup.sexuality === "female" ? "（核心角色限定为女性）" : "（核心角色男女均可）";
+        const initMsg=`现在开始新游戏。世界观：${setup.world}${worldNoteText}。当前时间：${currentTimeStr}。你是${setup.name}${setup.nickname?"（"+setup.nickname+"）":""}，${setup.gender}，${setup.age}岁${setup.personality ? "，性格"+setup.personality : ""}。${sexualityText}请生成第一回合叙事（1200-1800字），包含时间/地点/在场人物。请让你自然地处于故事中心。每周目会有4-6个核心角色，请先引出1-2个。末尾输出至少4个选项。新角色信息用HTML注释输出。请严格遵守已保存的设置。`;
+        try{
+            let resp=await callAI([{role:"user", content:initMsg}], currentAbortController.signal);
+            
+            if (containsForbiddenPersonalityPattern(resp, gameState.heroine.personality) && retryCount < 1) {
+                retryCount++;
+                hideGeneratingPlaceholder();
+                showGeneratingPlaceholderWithCancel(currentAbortController);
+                const retryMsg = initMsg + "\n\n【重要提醒】上一轮回复中出现了禁止的直接性格描述，请避免。";
+                resp = await callAI([{role:"user", content:retryMsg}], currentAbortController.signal);
+                retryCount = 0;
+            }
+            
+            if(!resp.match(/[A-Za-z0-9][\.、]\s*.+/)) {
+                resp += "\n\n请选择：\nA. [玩家主动] 继续探索\nB. [角色主动] 与身边的人交谈\nC. [事件推动] 查看周围环境\nD. [感情升温] 回忆过去";
+            }
+            const t=resp.match(/时间[：:]\s*(.+)/); const l=resp.match(/地点[：:]\s*(.+)/); const c=resp.match(/在场人物[：:]\s*(.+)/);
+            if(t){
+                const headerDiv = document.getElementById("roundHeader");
+                const currentHtml = headerDiv.innerHTML;
+                const lines = currentHtml.split('<br>');
+                if (lines.length >= 1) lines[0] = `<p>☾ 时间：${t[1]}</p>`;
+                headerDiv.innerHTML = lines.join('<br>');
+            } else {
+                updateRoundHeaderTime();
+            }
+            if(l)document.getElementById("roundHeader").innerHTML = document.getElementById("roundHeader").innerHTML.replace(/<p>☾ 地点：.*?<\/p>/, `<p>☾ 地点：${l[1]}</p>`);
+            if(c)document.getElementById("roundHeader").innerHTML = document.getElementById("roundHeader").innerHTML.replace(/<p>☾ 在场人物：.*?<\/p>/, `<p>☾ 在场人物：${c[1]}</p>`);
+            hideGeneratingPlaceholder();
+            addMessage(resp, initMsg);
+            gameState.currentTurn++;
+            updateUI();
+            autoSave();
+        }catch(e){ 
+            if (e.name !== 'AbortError') {
+                hideGeneratingPlaceholder(); 
+                alert(`初始化失败: ${e.message}\n\n请先用「测试API」按钮检查配置是否正确。`);
+            } else {
+                hideGeneratingPlaceholder();
+            }
+        }
+        currentAbortController = null;
+    }
+    
+    function renderOptions(text){
+        const c=document.getElementById("optionsContainer");
+        c.innerHTML="";
+        const lines=text.split("\n");
+        const opts=[];
+        for(let l of lines){ const m=l.match(/^\s*([A-Za-z0-9]+)[\.、]\s*(.+)/); if(m)opts.push({code:m[1],text:m[2]}); }
+        if(opts.length===0){c.innerHTML="<span>⌇ 无选项，可自由输入</span>";return;}
+        const sel=document.createElement("select");
+        sel.style.maxWidth = "100%";
+        sel.style.wordWrap = "break-word";
+        opts.forEach(o=>{
+            let opt=document.createElement("option");
+            opt.value=o.code;
+            opt.textContent=`${o.code}. ${o.text}`;
+            opt.style.whiteSpace = "normal";
+            opt.style.wordWrap = "break-word";
+            opt.style.padding = "0.3rem";
+            sel.appendChild(opt);
+        });
+        const btn=document.createElement("button"); btn.textContent="▷ 执行选项"; btn.onclick=()=>handleUserCmd(sel.value);
+        c.appendChild(sel); c.appendChild(btn);
+    }
+    
+    async function handleUserCmd(cmd){
+        if(gameState.isWorldEnded){alert("本周目已结束");return;}
+        if(!cmd.trim()||isLoading)return;
+        isLoading=true;
+        currentAbortController = new AbortController();
+        showGeneratingPlaceholderWithCancel(currentAbortController);
+        
+        const selectEl = document.querySelector("#optionsContainer select");
+        let choiceText = "";
+        if (selectEl) {
+            const selectedOption = selectEl.options[selectEl.selectedIndex];
+            if (selectedOption) choiceText = selectedOption.textContent;
+        }
+        addChoiceResult(cmd, choiceText.replace(/^[A-Za-z0-9]+\.\s*/, ''));
+        
+        const currentTimeStr = formatGameTime();
+        const optionsHint = getOptionsStructureInstr();
+        let userMsg=`玩家选择了选项：${cmd}。当前时间：${currentTimeStr}。请根据指令推进剧情，保持连贯，输出1200-1800字正文。
+${optionsHint}`;
+        try{
+            let resp=await callAI([{role:"user", content:userMsg}], currentAbortController.signal);
+            
+            const jumpDays = parseTimeJump(resp);
+            if (jumpDays > 0) {
+                advanceGameTime(gameState.turnUnit, jumpDays);
+                updateRoundHeaderTime();
+                resp = resp.replace(/【时间跳跃:\d+天】/g, '');
+            }
+            
+            resp = updateNSFWStateFromText(resp);
+            
+            // 选项结构验证和自动重试
+            const expectedMode = getExpectedOptionMode();
+            if (!validateOptionsStructure(resp, expectedMode) && retryCount < 1) {
+                retryCount++;
+                hideGeneratingPlaceholder();
+                showGeneratingPlaceholderWithCancel(currentAbortController);
+                const retryMsg = userMsg + `\n\n【重要提醒】上一轮回复中的选项不符合要求的格式。请严格按照格式输出4个选项：
+${optionsHint}`;
+                resp = await callAI([{role:"user", content:retryMsg}], currentAbortController.signal);
+                retryCount = 0;
+            }
+            
+            if (containsForbiddenPersonalityPattern(resp, gameState.heroine.personality) && retryCount < 1) {
+                retryCount++;
+                hideGeneratingPlaceholder();
+                showGeneratingPlaceholderWithCancel(currentAbortController);
+                const retryMsg = userMsg + "\n\n【重要提醒】上一轮回复中出现了禁止的直接性格描述，请避免。";
+                resp = await callAI([{role:"user", content:retryMsg}], currentAbortController.signal);
+                retryCount = 0;
+            }
+            
+            hideGeneratingPlaceholder();
+            addMessage(resp, userMsg);
+            updateUI();
+        }catch(e){ 
+            if (e.name !== 'AbortError') {
+                hideGeneratingPlaceholder(); 
+                alert(`指令错误: ${e.message}`);
+            } else {
+                hideGeneratingPlaceholder();
+            }
+        }
+        isLoading=false;
+        currentAbortController = null;
+    }
+    
+    function manualSaveToSlot(idx, customName){
+        const snap={ 
+            gameState:JSON.parse(JSON.stringify(gameState)), 
+            gameTime:JSON.parse(JSON.stringify(gameTime)),
+            nsfwState:JSON.parse(JSON.stringify(nsfwState)),
+            apiSettings:JSON.parse(JSON.stringify(apiSettings)), 
+            timestamp:Date.now() 
+        };
+        saveSlots[idx]={ name:customName||`存档${idx+1} ${getTimestamp()}`, data:snap };
+        localStorage.setItem("wenyou_slots", JSON.stringify(saveSlots));
+        alert(`✓ 已保存至槽位${idx+1}`);
+    }
+    
+    function loadFromSlot(idx){
+        const slot=saveSlots[idx];
+        if(!slot?.data){alert("空存档");return;}
+        try{
+            const d=slot.data;
+            gameState=JSON.parse(JSON.stringify(d.gameState));
+            if (d.gameTime) {
+                gameTime=JSON.parse(JSON.stringify(d.gameTime));
+                updateRoundHeaderTime();
+            }
+            if (d.nsfwState) nsfwState=JSON.parse(JSON.stringify(d.nsfwState));
+            apiSettings=JSON.parse(JSON.stringify(d.apiSettings));
+            document.getElementById("apiUrl").value=apiSettings.url||"";
+            document.getElementById("apiKey").value=apiSettings.key||"";
+            const ms=document.getElementById("modelSelect");
+            if(apiSettings.model){
+                let exists=false;
+                for(let i=0;i<ms.options.length;i++)if(ms.options[i].value===apiSettings.model){exists=true;break;}
+                if(!exists){let opt=document.createElement("option");opt.value=apiSettings.model;opt.textContent=apiSettings.model;ms.appendChild(opt);}
+                ms.value=apiSettings.model;
+            }
+            if(d.gameState.appliedSettings) {
+                appliedSettings = { ...appliedSettings, ...d.gameState.appliedSettings };
+                document.getElementById("nsfwForceControl").value = appliedSettings.nsfwForceControl || "auto";
+                document.getElementById("perspectiveSelect").value = appliedSettings.perspective || "second";
+            }
+            rebuildUIFromState();
+            alert(`读取成功：${slot.name}`);
+        }catch(e){alert(`读档失败:${e.message}`);}
+    }
+    
+    function showSaveLoadModal(isSave){
+        const modal=document.getElementById("saveLoadModal");
+        const title=document.getElementById("modalTitle");
+        title.innerText=isSave?"选择存档槽位":"选择读档槽位";
+        const container=document.getElementById("slotList");
+        container.innerHTML="";
+        for(let i=0;i<6;i++){
+            const s=saveSlots[i];
+            const div=document.createElement("div");div.style.marginBottom="8px";div.style.display="flex";div.style.justifyContent="space-between";
+            const span=document.createElement("span");span.textContent=`${i+1}. ${s.name}`;
+            if(s.data?.timestamp)span.textContent+=` (${new Date(s.data.timestamp).toLocaleString()})`;
+            const btn=document.createElement("button");btn.textContent=isSave?"保存":"读取";
+            btn.onclick=()=>{
+                if(isSave){ let name=prompt("存档名称",s.name==="空槽位"?`周目${gameState.currentTurn}`:s.name); if(name)manualSaveToSlot(i,name); }
+                else loadFromSlot(i);
+                modal.style.display="none";
+            };
+            div.appendChild(span); div.appendChild(btn);
+            container.appendChild(div);
+        }
+        modal.style.display="flex";
+    }
+    
+    async function generateWorldSummary(){
+        if(!apiSettings.key){alert("请先配置API");return;}
+        let full=gameState.history.join("\n");
+        if(!full.trim()){document.getElementById("summaryContent").innerHTML="无内容";return;}
+        const mainChars=gameState.characters.filter(c=>gameState.mainCharacterIds.includes(c.id));
+        const prompt=`请为以下快穿游戏周目生成一篇详细的总结（500-800字），包括：1.重要剧情回顾 2.玩家的经历与成长 3.玩家与各角色的羁绊发展（${mainChars.map(c=>c.name).join('、')}） 4.周目的最终结局氛围。世界观：${gameState.world}。`;
+        try{
+            const resp=await callAIForSummary(prompt);
+            document.getElementById("summaryContent").innerHTML=resp.replace(/\n/g,'<br>');
+        }catch(e){alert(`总结失败:${e.message}`);}
+    }
+    
+    async function callAIForSummary(prompt){
+        if(!apiSettings.key)throw new Error("未配置API");
+        const payload={model:apiSettings.model,messages:[{role:"user",content:prompt}],temperature:0.6,max_tokens:1500};
+        const resp=await fetch(apiSettings.url,{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${apiSettings.key}`},body:JSON.stringify(payload)});
+        if(!resp.ok)throw new Error(`API ${resp.status}`);
+        const data=await resp.json();
+        return data.choices[0].message.content;
+    }
+    
+    function downloadSummary(){
+        const content=document.getElementById("summaryContent").innerText;
+        const blob=new Blob([content],{type:"text/plain"});
+        const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`summary_${Date.now()}.txt`;a.click();
+    }
+    
+    async function fetchModels(){
+        const url=document.getElementById("apiUrl").value;
+        const key=document.getElementById("apiKey").value;
+        if(!key){alert("请填写API Key");return;}
+        const baseUrl=url.replace(/\/chat\/completions.*$/,'').replace(/\/$/,'');
+        const modelsUrl=`${baseUrl}/models`;
+        try{
+            const resp=await fetch(modelsUrl,{headers:{"Authorization":`Bearer ${key}`}});
+            if(!resp.ok)throw new Error(`HTTP ${resp.status}`);
+            const data=await resp.json();
+            if(data.data&&Array.isArray(data.data)){
+                const sel=document.getElementById("modelSelect");
+                sel.innerHTML="";
+                data.data.forEach(m=>{let opt=document.createElement("option");opt.value=m.id;opt.text=m.id;sel.appendChild(opt);});
+                alert(`✓ 拉取到 ${data.data.length} 个模型`);
+            } else throw new Error("格式异常");
+        }catch(e){alert(`拉取失败: ${e.message}`);}
+    }
+    
+    function autoSave(){ 
+        try{
+            const saveState = { ...gameState, gameTime: gameTime, nsfwState: nsfwState, appliedSettings: appliedSettings };
+            localStorage.setItem("wenyou_autosave", JSON.stringify({ gameState: saveState, apiSettings })); 
+        }catch(e){ console.warn("自动保存失败", e); }
+    }
+    
+    function loadAutoSave(){
+        try{
+            const raw=localStorage.getItem("wenyou_autosave");
+            if(raw){
+                const d=JSON.parse(raw);
+                gameState=d.gameState;
+                if(d.gameState.gameTime) {
+                    gameTime = d.gameState.gameTime;
+                    updateRoundHeaderTime();
+                }
+                if(d.gameState.nsfwState) nsfwState = d.gameState.nsfwState;
+                apiSettings=d.apiSettings;
+                if(gameState.appliedSettings) {
+                    appliedSettings = { ...appliedSettings, ...gameState.appliedSettings };
+                    document.getElementById("nsfwForceControl").value = appliedSettings.nsfwForceControl || "auto";
+                    document.getElementById("perspectiveSelect").value = appliedSettings.perspective || "second";
+                }
+                updateUI(); 
+                rebuildUIFromState();
+            }
+        }catch(e){ console.warn("加载自动存档失败", e); }
+        try{
+            const slots=localStorage.getItem("wenyou_slots");
+            if(slots)saveSlots=JSON.parse(slots);
+        }catch(e){ console.warn("加载存档槽位失败", e); }
+        loadAppliedSettings();
+    }
+    
+    function resetGame(){
+        if(confirm("重置世界将清空当前进度，保留API配置。确认吗？")){
+            const url=document.getElementById("apiUrl").value,key=document.getElementById("apiKey").value,model=document.getElementById("modelSelect").value;
+            gameState={world:null,worldType:null,worldCustomNote:"",turnUnit:"一天",currentTurn:0,heroine:{name:"",nickname:"",personality:"",gender:"女",age:"",appearance:"",background:"",sexuality:"both"},characters:[],mainCharacterIds:[],history:[],conversationHistory:[],narrativeElements:[],writingStyle:"default",isWorldEnded:false,worldEndSummary:""};
+            nsfwState = { isActive: false, isAtNaturalEnd: false, roundsCount: 0 };
+            document.getElementById("apiUrl").value=url;document.getElementById("apiKey").value=key;
+            if(model){
+                const ms=document.getElementById("modelSelect");
+                let exists=false;
+                for(let i=0;i<ms.options.length;i++)if(ms.options[i].value===model){exists=true;break;}
+                if(!exists&&model){let opt=document.createElement("option");opt.value=model;opt.textContent=model;ms.appendChild(opt);}
+                ms.value=model;
+            }
+            document.getElementById("narrativeText").innerHTML="◇ 快穿·万人迷 ◇<br><br>请先完成设定表格开始游戏。";
+            document.getElementById("roundHeader").innerHTML="<p>☾ 时间：——</p><p>☾ 地点：——</p><p>☾ 在场人物：——</p>";
+            document.getElementById("optionsContainer").innerHTML="";
+            updateUI();
+            autoSave();
+            alert("游戏已重置。");
+        }
+    }
+    
+    function checkAndEndWorld(){
+        if(gameState.isWorldEnded) return;
+        const mainChars=gameState.characters.filter(c=>gameState.mainCharacterIds.includes(c.id));
+        if(mainChars.length>=4 && mainChars.every(c=>c.favor>=100) && gameState.currentTurn>=10){
+            endWorldAutomatically();
+        }
+    }
+    
+    async function endWorldAutomatically(){
+        if(gameState.isWorldEnded)return;
+        gameState.isWorldEnded=true;
+        const mainChars=gameState.characters.filter(c=>gameState.mainCharacterIds.includes(c.id));
+        const summaryPrompt=`请为以下快穿游戏周目生成一篇详细的总结（500-800字），包括重要剧情回顾、玩家经历与成长、玩家与各角色的羁绊发展（${mainChars.map(c=>c.name).join('、')}）、周目的最终结局氛围。世界观：${gameState.world}。`;
+        try{
+            const summary=await callAIForSummary(summaryPrompt);
+            gameState.worldEndSummary=summary;
+            document.getElementById("summaryContent").innerHTML=summary.replace(/\n/g,'<br>');
+            document.getElementById("summaryModal").style.display="flex";
+            addMessage(`\n✧✧✧ 周目完结 ✧✧✧\n\n${summary}\n\n本周目已圆满结束。`,null,false);
+            autoSave();
+        }catch(e){
+            addMessage(`\n✧✧✧ 周目完结 ✧✧✧\n\n所有核心角色的好感度已达到100，本周目圆满结束。`,null,false);
+        }
+    }
+    
+    function collectSetup(){
+        let name = document.getElementById("heroName").value.trim() || "随机";
+        let nickname = document.getElementById("heroNickname").value.trim() || "";
+        let gender = document.getElementById("heroGender").value;
+        let age = document.getElementById("heroAge").value.trim() || "";
+        let look = document.getElementById("heroLook").value.trim() || "";
+        let personality = document.getElementById("heroPersonality").value.trim() || "";
+        let background = document.getElementById("heroBackground").value.trim() || "";
+        let worldSelect = document.getElementById("worldSelect").value;
+        let worldCustomNote = document.getElementById("worldCustom").value.trim();
+        let sexuality = document.getElementById("sexualitySelect").value;
+        let worldRaw = worldSelect === "other" ? "custom" : worldSelect;
+        let finalWorld = worldSelect === "other" ? (worldCustomNote.split("\n")[0] || "自定义世界") : 
+            ({A:"现代校园/职场",B:"古风宫廷/仙侠",C:"西幻/异世界",D:"星际/未来科幻",E:"娱乐圈/偶像",F:"末日/废土",G:"推理/悬疑",H:"蒸汽朋克",I:"魔法学院",J:"修真/仙侠",K:"兽人/亚人",L:"吸血鬼/狼人"}[worldSelect] || "自定义");
+        if(name === "随机") name = ["清晏","子衿","鹿鸣","南乔","未晞"][Math.floor(Math.random()*5)];
+        if(age === "" || age === "随机") age = (18 + Math.floor(Math.random()*10)).toString();
+        if(look === "" || look === "随机") look = "黑长直，琥珀色眼眸";
+        if(personality === "" || personality === "随机") personality = "";
+        if(background === "" || background === "随机") background = "普通家庭，意外穿越";
+        return { name, nickname, gender, age, look, personality, background, world: finalWorld, worldRaw, worldCustomNote, sexuality };
+    }
+    
+    function applyTheme(theme, isNight) {
+        document.body.classList.remove(
+            'theme-blackwhite', 'theme-morandi_blue', 'theme-burgundy', 
+            'theme-morandi_apricot', 'theme-morandi_sage'
+        );
+        switch(theme) {
+            case 'blackwhite':
+                document.body.classList.add('theme-blackwhite');
+                break;
+            case 'morandi_blue':
+                document.body.classList.add('theme-morandi_blue');
+                break;
+            case 'burgundy':
+                document.body.classList.add('theme-burgundy');
+                break;
+            case 'morandi_apricot':
+                document.body.classList.add('theme-morandi_apricot');
+                break;
+            case 'morandi_sage':
+                document.body.classList.add('theme-morandi_sage');
+                break;
+            default:
+                document.body.classList.add('theme-blackwhite');
+        }
+        if (isNight) {
+            document.body.classList.add('night-mode');
+        } else {
+            document.body.classList.remove('night-mode');
+        }
+        localStorage.setItem("theme", theme);
+        localStorage.setItem("night", isNight ? "night" : "day");
+    }
+    
+    window.onload = () => {
+        loadAutoSave();
+        const savedTheme = localStorage.getItem("theme") || "blackwhite";
+        const savedNight = localStorage.getItem("night") === "night";
+        applyTheme(savedTheme, savedNight);
+        document.getElementById("colorThemeSelect").value = savedTheme;
+        document.getElementById("nightModeSelect").value = savedNight ? "night" : "day";
+        document.getElementById("colorThemeSelect").onchange = () => applyTheme(document.getElementById("colorThemeSelect").value, document.getElementById("nightModeSelect").value === "night");
+        document.getElementById("nightModeSelect").onchange = () => applyTheme(document.getElementById("colorThemeSelect").value, document.getElementById("nightModeSelect").value === "night");
+        document.getElementById("nextRoundBtn").onclick = nextTurn;
+        document.getElementById("initWorldBtn").onclick = () => document.getElementById("setupModal").style.display = "flex";
+        document.getElementById("saveGameBtn").onclick = () => showSaveLoadModal(true);
+        document.getElementById("loadGameBtn").onclick = () => showSaveLoadModal(false);
+        document.getElementById("resetWorldBtn").onclick = resetGame;
+        document.getElementById("summaryBtn").onclick = () => { document.getElementById("summaryModal").style.display = "flex"; generateWorldSummary(); };
+        document.getElementById("endWorldBtn").onclick = () => alert("结束世界：请手动点击「初始化」开始新周目");
+        document.getElementById("sendCmdBtn").onclick = () => { handleUserCmd(document.getElementById("userCommand").value); document.getElementById("userCommand").value = ""; };
+        document.getElementById("saveApiBtn").onclick = () => { 
+            apiSettings.url = document.getElementById("apiUrl").value; 
+            apiSettings.key = document.getElementById("apiKey").value; 
+            apiSettings.model = document.getElementById("modelSelect").value; 
+            autoSave(); 
+            alert("API配置已保存"); 
+        };
+        document.getElementById("fetchModelsBtn").onclick = fetchModels;
+        document.getElementById("viewPanelBtn").onclick = () => updateUI();
+        document.getElementById("testApiBtn").onclick = testAPIConnection;
+        document.getElementById("saveSettingsBtn").onclick = saveSettings;
+        document.getElementById("checkSettingsBtn").onclick = checkSettings;
+        document.getElementById("cancelSetupBtn").onclick = () => document.getElementById("setupModal").style.display = "none";
+        document.getElementById("confirmSetupBtn").onclick = async () => { 
+            const setup = collectSetup(); 
+            document.getElementById("setupModal").style.display = "none"; 
+            await startNewWorld(setup); 
+        };
+        document.getElementById("closeModalBtn").onclick = () => document.getElementById("saveLoadModal").style.display = "none";
+        document.getElementById("closeSummaryBtn").onclick = () => document.getElementById("summaryModal").style.display = "none";
+        document.getElementById("downloadSummaryBtn").onclick = downloadSummary;
+        window.onclick = (e) => { if(e.target.classList.contains("modal")) e.target.style.display = "none"; };
+        if(!gameState.world) document.getElementById("setupModal").style.display = "flex";
+    };
+</script>
+</body>
+</html>
