@@ -117,7 +117,6 @@
             transition: background 0.2s, color 0.2s;
         }
         
-        /* 所有圆角改为4px */
         .game-header {
             text-align: center;
             margin-bottom: 1.2rem;
@@ -303,9 +302,18 @@
     <div class="form-group"><label>性格</label><input id="heroPersonality" placeholder="可选，留空则不描写"></div>
     <div class="form-group"><label>背景</label><input id="heroBackground" placeholder="可选，留空则默认"></div>
     <div class="form-group"><label>世界观</label><select id="worldSelect">
-        <option value="A">现代校园/职场</option><option value="B">古风宫廷/仙侠</option><option value="C">西幻/异世界</option><option value="D">星际/未来科幻</option>
-        <option value="E">娱乐圈/偶像</option><option value="F">末日/废土</option><option value="G">推理/悬疑</option><option value="H">蒸汽朋克</option>
-        <option value="I">魔法学院</option><option value="J">修真/仙侠</option><option value="K">兽人/亚人</option><option value="L">吸血鬼/狼人</option>
+        <option value="A">现代校园/职场</option>
+        <option value="B">古风宫廷</option>
+        <option value="C">修真/仙侠</option>
+        <option value="D">西幻/异世界</option>
+        <option value="E">星际/未来科幻</option>
+        <option value="F">娱乐圈/偶像</option>
+        <option value="G">末日/废土</option>
+        <option value="H">推理/悬疑</option>
+        <option value="I">蒸汽朋克</option>
+        <option value="J">魔法学院</option>
+        <option value="K">兽人/亚人</option>
+        <option value="L">吸血鬼/狼人</option>
         <option value="other">✧ 其他（自定义）</option>
     </select></div>
     <div class="form-group"><label>世界观备注/期望</label><textarea id="worldCustom" rows="3" placeholder="补充期望"></textarea><div class="hint">◌ 可补充对世界观的期望</div></div>
@@ -350,9 +358,9 @@
     
     // NSFW剧情状态跟踪
     let nsfwState = {
-        isActive: false,           // 是否正在进行NSFW剧情
-        isAtNaturalEnd: false,     // 是否到达自然结束点
-        roundsCount: 0             // NSFW持续回合数
+        isActive: false,
+        isAtNaturalEnd: false,
+        roundsCount: 0
     };
     
     // 保存玩家设置的对象
@@ -375,7 +383,8 @@
     
     function generateCalendarName(worldName) {
         if (worldName.includes("西幻") || worldName.includes("异世界") || worldName.includes("魔法")) return "塞拉历";
-        if (worldName.includes("古风") || worldName.includes("仙侠") || worldName.includes("修真")) return "沧澜历";
+        if (worldName.includes("古风") || worldName.includes("宫廷")) return "沧澜历";
+        if (worldName.includes("修真") || worldName.includes("仙侠")) return "玄天历";
         if (worldName.includes("现代") || worldName.includes("校园") || worldName.includes("职场") || worldName.includes("娱乐圈")) return "公元历";
         if (worldName.includes("星际") || worldName.includes("未来") || worldName.includes("科幻")) return "星历";
         if (worldName.includes("末日") || worldName.includes("废土")) return "废土历";
@@ -482,9 +491,8 @@
         return text.replace(/【NSFW:[^\]]+】/g, '');
     }
     
-    // ========== 选项结构检测函数（新增）==========
+    // ========== 选项结构检测函数 ==========
     
-    // 检测选项是否符合四选项架构
     function validateOptionsStructure(text, expectedMode) {
         const lines = text.split(/\r?\n/);
         const optionLines = [];
@@ -498,7 +506,6 @@
         const firstFour = optionLines.slice(0, 4);
         
         if (expectedMode === "force_on") {
-            // 强制开启：检查是否都引导继续NSFW
             const nsfwKeywords = ["主动", "靠近", "亲吻", "拥抱", "深入", "继续", "缠绵", "暧昧", "升温", "抚摸", "贴近", "推进"];
             for (let opt of firstFour) {
                 let hasKeyword = nsfwKeywords.some(kw => opt.text.includes(kw));
@@ -508,7 +515,6 @@
         }
         
         if (expectedMode === "force_off") {
-            // 强制关闭：检查是否都引导结束NSFW
             const endKeywords = ["整理", "起身", "离开", "转移", "结束", "停止", "穿衣", "日常", "交谈", "散步", "休息"];
             for (let opt of firstFour) {
                 let hasKeyword = endKeywords.some(kw => opt.text.includes(kw));
@@ -518,14 +524,9 @@
         }
         
         if (expectedMode === "nsfw_active") {
-            // NSFW进行中：检查A玩家主动/B角色主动/C事件推动/D感情升温
-            // A选项应包含玩家主动相关词
             const playerKeywords = ["主动", "伸手", "靠近", "亲吻", "拥抱", "抚摸", "推进", "继续"];
-            // B选项应包含角色主动相关词
             const characterKeywords = ["主动", "靠近", "贴近", "环住", "吻", "抱", "依偎", "靠"];
-            // C选项应包含事件/外部相关词
             const eventKeywords = ["窗外", "门外", "声音", "脚步声", "光线", "风吹", "突然", "意外", "打断", "刺激"];
-            // D选项应包含感情升温相关词
             const emotionKeywords = ["感情", "升温", "暧昧", "深情", "呢喃", "低语", "心", "温柔", "深入"];
             
             let aValid = playerKeywords.some(kw => firstFour[0].text.includes(kw));
@@ -537,7 +538,6 @@
         }
         
         if (expectedMode === "nsfw_natural_end") {
-            // 自然结束点：前三个引导结束，第四个引导继续NSFW
             const endKeywords = ["结束", "起身", "整理", "穿衣", "离开", "休息", "相拥", "睡"];
             const continueKeywords = ["再来", "继续", "新一轮", "再次", "重新", "深入", "缠绵"];
             
@@ -549,11 +549,19 @@
             return abcValid && dValid;
         }
         
-        // 日常模式：宽松检查，只要有4个选项即可
         return true;
     }
     
-    // 获取选项结构指令（强化版，放在系统提示最开头）
+    function getPlayerPronoun() {
+        const perspective = document.getElementById("perspectiveSelect").value;
+        if (perspective === "first") return "我";
+        if (perspective === "third") {
+            const gender = gameState.heroine.gender || "女";
+            return gender === "女" ? "她" : "他";
+        }
+        return "你";
+    }
+    
     function getOptionsStructureInstr() {
         const forceValue = document.getElementById("nsfwForceControl").value;
         const pronoun = getPlayerPronoun();
@@ -592,7 +600,7 @@ D. [继续NSFW] （引导继续或开始新一轮NSFW剧情的具体内容）
 A. [玩家主动] （由${pronoun}主动推动NSFW剧情的具体内容）
 B. [角色主动] （由某位角色主动推动NSFW剧情的具体内容）
 C. [事件推动] （由NPC或外部事件推动NSFW剧情的具体内容）
-D. [感情升温] （引导感情升温或让NSFW剧情更深入的具体内容）
+D. [感情升温] （引导感情升温或让NSFW剧情更深入的具體内容）
 每个选项必须包含对应的类型标签（如 [玩家主动]）。`;
         }
         
@@ -605,18 +613,6 @@ D. [感情升温] （引导感情升温或引向暧昧/NSFW的具体内容）
 每个选项必须包含对应的类型标签。`;
     }
     
-    // 获取当前人称代词
-    function getPlayerPronoun() {
-        const perspective = document.getElementById("perspectiveSelect").value;
-        if (perspective === "first") return "我";
-        if (perspective === "third") {
-            const gender = gameState.heroine.gender || "女";
-            return gender === "女" ? "她" : "他";
-        }
-        return "你";
-    }
-    
-    // 获取玩家主体地位规则
     function getPlayerAgencyRule() {
         return `【玩家主体地位 - 绝对禁止条款 - 最高优先级】
 1. 严禁矮化、弱化、物化、动物化玩家
@@ -629,7 +625,6 @@ D. [感情升温] （引导感情升温或引向暧昧/NSFW的具体内容）
 8. 允许玩家在选项中主动选择“示弱”“依赖”“被保护”等情节，但这必须是玩家主动选择的结果`;
     }
     
-    // 获取性别平等规则
     function getGenderEqualityRule() {
         return `【性别平等规则 - 必须严格遵守】
 1. NPC中女性角色和男性角色数量各占一半
@@ -640,7 +635,6 @@ D. [感情升温] （引导感情升温或引向暧昧/NSFW的具体内容）
 6. 核心角色生成时，根据玩家的性取向选择决定：选择“男”则全为男性，“女”则全为女性，“男女均可”则男女随机混合`;
     }
     
-    // 获取性格处理规则
     function getPersonalityRule() {
         const personality = gameState.heroine.personality;
         if (personality && personality !== "" && personality !== "随机") {
@@ -1212,7 +1206,6 @@ ${styleInstr}
         }
     }
     
-    // 获取当前期望的选项模式（用于验证）
     function getExpectedOptionMode() {
         const forceValue = document.getElementById("nsfwForceControl").value;
         if (forceValue === "force_on") return "force_on";
@@ -1252,7 +1245,6 @@ ${optionsHint}
             
             resp = updateNSFWStateFromText(resp);
             
-            // 选项结构验证和自动重试
             const expectedMode = getExpectedOptionMode();
             if (!validateOptionsStructure(resp, expectedMode) && retryCount < 1) {
                 retryCount++;
@@ -1346,7 +1338,7 @@ ${optionsHint}
         nsfwState = { isActive: false, isAtNaturalEnd: false, roundsCount: 0 };
         
         const fastWorlds=["现代校园/职场","娱乐圈/偶像","推理/悬疑","末日/废土","蒸汽朋克"];
-        const slowWorlds=["古风宫廷/仙侠","西幻/异世界","星际/未来科幻","魔法学院","修真/仙侠","兽人/亚人","吸血鬼/狼人"];
+        const slowWorlds=["古风宫廷","修真/仙侠","西幻/异世界","星际/未来科幻","魔法学院","兽人/亚人","吸血鬼/狼人"];
         if(fastWorlds.some(w=>setup.world.includes(w))) gameState.turnUnit="一天";
         else if(slowWorlds.some(w=>setup.world.includes(w))) gameState.turnUnit="一周";
         else gameState.turnUnit="一天";
@@ -1458,7 +1450,6 @@ ${optionsHint}`;
             
             resp = updateNSFWStateFromText(resp);
             
-            // 选项结构验证和自动重试
             const expectedMode = getExpectedOptionMode();
             if (!validateOptionsStructure(resp, expectedMode) && retryCount < 1) {
                 retryCount++;
@@ -1701,8 +1692,13 @@ ${optionsHint}`;
         let worldCustomNote = document.getElementById("worldCustom").value.trim();
         let sexuality = document.getElementById("sexualitySelect").value;
         let worldRaw = worldSelect === "other" ? "custom" : worldSelect;
-        let finalWorld = worldSelect === "other" ? (worldCustomNote.split("\n")[0] || "自定义世界") : 
-            ({A:"现代校园/职场",B:"古风宫廷/仙侠",C:"西幻/异世界",D:"星际/未来科幻",E:"娱乐圈/偶像",F:"末日/废土",G:"推理/悬疑",H:"蒸汽朋克",I:"魔法学院",J:"修真/仙侠",K:"兽人/亚人",L:"吸血鬼/狼人"}[worldSelect] || "自定义");
+        let worldMap = {
+            "A": "现代校园/职场", "B": "古风宫廷", "C": "修真/仙侠",
+            "D": "西幻/异世界", "E": "星际/未来科幻", "F": "娱乐圈/偶像",
+            "G": "末日/废土", "H": "推理/悬疑", "I": "蒸汽朋克",
+            "J": "魔法学院", "K": "兽人/亚人", "L": "吸血鬼/狼人"
+        };
+        let finalWorld = worldSelect === "other" ? (worldCustomNote.split("\n")[0] || "自定义世界") : (worldMap[worldSelect] || "自定义");
         if(name === "随机") name = ["清晏","子衿","鹿鸣","南乔","未晞"][Math.floor(Math.random()*5)];
         if(age === "" || age === "随机") age = (18 + Math.floor(Math.random()*10)).toString();
         if(look === "" || look === "随机") look = "黑长直，琥珀色眼眸";
